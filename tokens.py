@@ -1,15 +1,12 @@
 
 #Constantes tokens
 TK_VAR_DIV="|"
-TK_VAR_NAME
 TK_VAR_ASSIGN=":="
 
 TK_CODEBLOCK_DIVLEFT="["
 TK_CODEBLOCK_DIVRIGHT="]"
 
 TK_PROC= "proc"
-TK_PROC_NAME
-TK_PARAM_NAME
 
 #Tokens instrucciones
 TK_GOTO="goto:"
@@ -22,6 +19,8 @@ TK_TURN="turn:"
 TK_LEFT="#left"
 TK_RIGHT="#right"
 TK_AROUND="#around"
+TK_BACK="#back"
+TK_FRONT="#front"
 
 TK_FACE="face:"
 #tokens D
@@ -67,8 +66,16 @@ TK_CANJUMP="canJump:"
 TK_NOT="not:"
 
 TK_PUNTO="."
-TK_NUMERO
-#Usado cuando llamas procedure, asignar variable
+
+TK_NUMERO="numero"
+
+#Este es nombre que termine con ":", tipo para parametros o nombres de funciones
+TK_NAMEPUNTOS="namePuntos"
+
+#Este es nombre suelto que NO termina ":", tipo para variables
+TK_NAME="name"
+
+TK_UNKNOWN="unknown"
 
 
 
