@@ -1,14 +1,12 @@
 import tokens as tk
 
 #Retorna una lista que contiene tuplas adentro.
-#Primer elemento es el tipo de token, segundo elemento es mas para los nombres de cosas
+#Primer elemento de la tupla es el tipo de token, segundo elemento es mas para los nombres de cosas
 # como variables y procedimientos
 #En el caso de nombres sueltos, hay que asegurarse de eliminar comas en funciones futuras 
 # y chequear si es un string de numero o un nombre nombre
 def tokenize(inputString) -> list:
     lstTokens=[]
-    lstNombresPuntos=[]
-    lstNombresSueltos=[]
     
     lstSplit=inputString.split(" ")
     
@@ -43,7 +41,7 @@ def tokenize(inputString) -> list:
                     
                 i+=1                     
             
-    cleanUnknowns(lstTokens, lstNombresPuntos, lstNombresSueltos)
+    return cleanUnknowns(lstTokens, lstNombresPuntos, lstNombresSueltos)
     
     
         
@@ -51,7 +49,7 @@ TK_NAME
 TK_NUMERO
 TK_NAMEPUNTOS
 
-def cleanUnknowns(unkLstTokens, lstNombresPuntos, lstNombresSueltos):
+def cleanUnknowns(unkLstTokens):
     
     #Recorrer toda la lista de tokens
     #Si hay un unknown, chequear si hay otros unknowns después
@@ -60,10 +58,10 @@ def cleanUnknowns(unkLstTokens, lstNombresPuntos, lstNombresSueltos):
     cleanedLstTokens=[]
     
     i1=0;
-    while i1<lstTokens.size():
+    while i1<unkLstTokens.size():
+        a
         
-        
-    return lstTokens, lstNombresPuntos, lstNombresSueltos
+    return cleanedLstTokens
 
     
 def checkIfToken(subString)-> str:
