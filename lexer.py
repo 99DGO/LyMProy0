@@ -44,17 +44,25 @@ def tokenize(inputString) -> list:
                 i+=1                     
             
     cleanUnknowns(lstTokens, lstNombresPuntos, lstNombresSueltos)
+    
+    
         
 TK_NAME
 TK_NUMERO
 TK_NAMEPUNTOS
 
-def cleanUnknowns(lstTokens, lstNombresPuntos, lstNombresSueltos):
+def cleanUnknowns(unkLstTokens, lstNombresPuntos, lstNombresSueltos):
     
     #Recorrer toda la lista de tokens
     #Si hay un unknown, chequear si hay otros unknowns después
     #Juntarlos para crear un token name, un token numero, o un token namepuntos y reemplazarlo los 
     #token unknown por el nuevo token. 
+    cleanedLstTokens=[]
+    
+    i1=0;
+    while i1<lstTokens.size():
+        
+        
     return lstTokens, lstNombresPuntos, lstNombresSueltos
 
     
