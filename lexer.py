@@ -3,8 +3,7 @@ import tokens as tk
 #Retorna una lista que contiene tuplas adentro.
 #Primer elemento de la tupla es el tipo de token, segundo elemento es mas para los nombres de cosas
 # como variables y procedimientos
-#En el caso de nombres sueltos, hay que asegurarse de eliminar comas en funciones futuras 
-# y chequear si es un string de numero o un nombre nombre
+
 def tokenize(inputString) -> list:
     lstTokens=[]
     
@@ -40,14 +39,8 @@ def tokenize(inputString) -> list:
                     lstTokens.append(tk.TK_UNKNOWN, subString[i])
                     
                 i+=1                     
-            
-    return cleanUnknowns(lstTokens, lstNombresPuntos, lstNombresSueltos)
-    
-    
-        
-TK_NAME
-TK_NUMERO
-TK_NAMEPUNTOS
+     
+    return cleanUnknowns(lstTokens)
 
 def cleanUnknowns(unkLstTokens):
     
@@ -59,7 +52,34 @@ def cleanUnknowns(unkLstTokens):
     
     i1=0;
     while i1<unkLstTokens.size():
-        a
+        if unkLstTokens[i1][0]!= tk.TK_UNKNOWN:
+            cleanedLstTokens.append(unkLstTokens[i1])
+        else:
+            unknown=unkLstTokens[i1][1]
+            i2=i1+1
+            continua=True
+            
+            #Añado los unknownTokens a unknown
+            while i2<unkLstTokens.size() and continua:
+                if unkLstTokens[i2][0]==tk.TK_UNKNOWN:
+                    unknown+=unkLstTokens[i2][1]
+                    i1=i2
+                else:
+                    continua=False
+                i2+=1
+            
+            #Chequeo que es unknown y lo añado
+            if unknown[-1]==":":
+                cleanedLstTokens.append((tk.TK_NAMEPUNTOS, unknown[:-1]))
+            elif unknown.isdigit():
+                cleanedLstTokens.append((tk.TK_NUMERO, unknown))
+            else:
+                if unknown[-1]==",":
+                    cleanedLstTokens.append((tk.TK_NAME, unknown[:-1]))
+                else:
+                    cleanedLstTokens.append((tk.TK_NAME, unknown))
+        
+        i1+=1
         
     return cleanedLstTokens
 
