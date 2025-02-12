@@ -1,4 +1,3 @@
-
 #Constantes tokens
 TK_VAR_DIV="|"
 TK_VAR_ASSIGN=":="
@@ -77,6 +76,7 @@ TK_NAME="name"
 
 TK_UNKNOWN="unknown"
 TK_UNKNOWN_END="unknown end"
+
 
 
 
