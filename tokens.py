@@ -1,4 +1,3 @@
-
 #Constantes tokens
 TK_VAR_DIV="|"
 TK_VAR_ASSIGN=":="
@@ -76,6 +75,7 @@ TK_NAMEPUNTOS="namePuntos"
 TK_NAME="name"
 
 TK_UNKNOWN="unknown"
+
 
 
 
