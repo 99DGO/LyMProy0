@@ -29,7 +29,7 @@ TK_SOUTH="#south"
 TK_WEST="#west"
 TK_EAST="#east"
 
-TK_PUT="put"
+TK_PUT="put:"
 TK_BALLOONS="#balloons"
 TK_CHIPS="#chips"
 TK_PICK="pick:"
@@ -76,6 +76,8 @@ TK_NAMEPUNTOS="namePuntos"
 TK_NAME="name"
 
 TK_UNKNOWN="unknown"
+TK_UNKNOWN_END="unknown end"
+
 
 
 
