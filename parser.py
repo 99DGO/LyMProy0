@@ -1,5 +1,112 @@
 import tokens as tk
 
+
+def parserMain(lstTokens)-> bool:
+    correcta=True
+    
+    try:
+        while len(lstTokens)!=0:
+            token=lstTokens[0]
+            
+            if token[0]==tk.TK_Name:
+                checkTK_NAME(lstTokens)
+            elif token[0]==tk.TK_VAR_DIV:
+                checkTK_VAR_DIV(lstTokens)
+            elif token[0]==tk.TK_VAR_ASSIGN:
+                checkTK_VAR_ASSIGN(lstTokens)
+            elif token[0]==tk.TK_PROC:
+                checkTK_PROC(lstTokens)
+            elif token[0]==tk.TK_CODEBLOCK_DIVLEFT:
+                checkTK_CODEBLOCK_DIVLEFT(lstTokens)
+            elif token[0]==tk.TK_CODEBLOCK_DIVRIGHT:
+                checkTK_CODEBLOCK_DIVRIGHT(lstTokens)
+            elif token[0]==tk.TK_GOTO:
+                checkTK_GOTO(lstTokens)
+            elif token[0]==tk.TK_WITH:
+                checkTK_WITH(lstTokens)
+            elif token[0]==tk.TK_MOVE:
+                checkTK_MOVE(lstTokens)
+            elif token[0]==tk.TK_TURN:
+                checkTK_TURN(lstTokens)
+            elif token[0]==tk.TK_LEFT:
+                checkTK_LEFT(lstTokens)
+            elif token[0]==tk.TK_RIGHT:
+                checkTK_RIGHT(lstTokens)
+            elif token[0]==tk.TK_AROUND:
+                checkTK_AROUND(lstTokens)
+            elif token[0]==tk.TK_BACK:
+                checkTK_BACK(lstTokens)
+            elif token[0]==tk.TK_FRONT:
+                checkTK_FRONT(lstTokens)
+            elif token[0]==tk.TK_FACE:
+                checkTK_FACE(lstTokens)
+            elif token[0]==tk.TK_NORTH:
+                checkTK_NORTH(lstTokens)
+            elif token[0]==tk.TK_SOUTH:
+                checkTK_SOUTH(lstTokens)
+            elif token[0]==tk.TK_WEST:
+                checkTK_WEST(lstTokens)
+            elif token[0]==tk.TK_EAST:
+                checkTK_EAST(lstTokens)
+            elif token[0]==tk.TK_PUT:
+                checkTK_PUT(lstTokens)
+            elif token[0]==tk.TK_BALLOONS:
+                checkTK_BALLOONS(lstTokens)
+            elif token[0]==tk.TK_CHIPS:
+                checkTK_CHIPS(lstTokens)
+            elif token[0]==tk.TK_PICK:
+                checkTK_PICK(lstTokens)
+            elif token[0]==tk.TK_MOVE:
+                checkTK_MOVE(lstTokens)
+            elif token[0]==tk.TK_TOTHE:
+                checkTK_TOTHE(lstTokens)
+            elif token[0]==tk.TK_INDIR:
+                checkTK_INDIR(lstTokens)
+            elif token[0]==tk.TK_JUMP:
+                checkTK_JUMP(lstTokens)
+            elif token[0]==tk.TK_NOP:
+                checkTK_NOP(lstTokens)
+            elif token[0]==tk.TK_IF:
+                checkTK_IF(lstTokens)
+            elif token[0]==tk.TK_THEN:
+                checkTK_THEN(lstTokens)
+            elif token[0]==tk.TK_ELSE:
+                checkTK_ELSE(lstTokens)
+            elif token[0]==tk.TK_WHILE:
+                checkTK_WHILE(lstTokens)
+            elif token[0]==tk.TK_DO:
+                checkTK_DO(lstTokens)
+            elif token[0]==tk.TK_FOR:
+                checkTK_FOR(lstTokens)
+            elif token[0]==tk.TK_REPEAT:
+                checkTK_REPEAT(lstTokens)
+            elif token[0]==tk.TK_FACING:
+                checkTK_FACING(lstTokens)
+            elif token[0]==tk.TK_CANPUT:
+                checkTK_CANPUT(lstTokens)
+            elif token[0]==tk.TK_OFTYPE:
+                checkTK_OFTYPE(lstTokens)
+            elif token[0]==tk.TK_CANPICK:
+                checkTK_CANPICK(lstTokens)
+            elif token[0]==tk.TK_CANMOVE:
+                checkTK_CANMOVE(lstTokens)
+            elif token[0]==tk.TK_CANJUMP:
+                checkTK_CANJUMP(lstTokens)
+            elif token[0]==tk.TK_NOT:
+                checkTK_NOT(lstTokens)
+            elif token[0]==tk.TK_PUNTO:
+                checkTK_PUNTO(lstTokens)
+            elif token[0]==tk.TK_NUMERO:
+                checkTK_NUMERO(lstTokens)
+            elif token[0]==tk.TK_NAMEPUNTOS:
+                checkTK_NAMEPUNTOS(lstTokens)
+            else:
+                checkTK_Name(lstTokens)
+    except:
+        correcta=False
+    
+    return correcta
+    
 # -------------------------------
 # funcs para chequear tipos de nombres y números
 # -------------------------------
@@ -222,3 +329,4 @@ def checkTK_INSTRUCCION(lstTokens):
         
     lstTokens.pop(0)
     return lstTokens
+ # type: ignore
