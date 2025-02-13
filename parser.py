@@ -480,13 +480,28 @@ def checkTK_MOVE(lstTokens, nombreProc=""):
                 if lstTokens[0][0]==tk.TK_PUNTO:
                     lstTokens.pop(0) 
                 else:
-                    raise Exception("token pick")        
+                    raise Exception("token MOVE")        
             else:
-                raise Exception("token pick")
+                raise Exception("token MOVE")
+            
+        elif lstTokens[0][0]==tk.TK_INDIR:
+            lstTokens.pop(0)
+            
+            if  check_Direction_NESW(lstTokens):
+                lstTokens.pop(0)
+                
+                if lstTokens[0][0]==tk.TK_PUNTO:
+                    lstTokens.pop(0) 
+                else:
+                    raise Exception("token MOVE")        
+            else:
+                raise Exception("token MOVE")
+
         else:
-            raise Exception("token pick")
+            raise Exception("token MOVE")
     else:
-        raise Exception("token pick")
+        raise Exception("token MOVE")
+
     
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs de auxiliares
