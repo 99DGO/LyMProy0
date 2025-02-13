@@ -75,8 +75,6 @@ def parserMain(lstTokens)-> bool:
                 checkTK_FACING(lstTokens)
             elif token[0]==tk.TK_CANPUT:
                 checkTK_CANPUT(lstTokens)
-            elif token[0]==tk.TK_OFTYPE:
-                checkTK_OFTYPE(lstTokens)
             elif token[0]==tk.TK_CANPICK:
                 checkTK_CANPICK(lstTokens)
             elif token[0]==tk.TK_CANMOVE:
@@ -118,9 +116,10 @@ def opcionesIfLoopFor(lstTokens, nombreProc=""):
     elif token[0]==tk.TK_FOR:
         checkTK_FOR(lstTokens, nombreProc)
 
-# -------------------------------
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs para chequear tipos de nombres y números
-# -------------------------------
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+
 def checkTK_NAME(lstTokens):
     """
     Verifica si el token actual es un nombre válido.
@@ -154,9 +153,10 @@ def checkTK_NAMEPUNTOS(lstTokens):
         lstTokens[0] = (tk.TK_NAMEPUNTOS, token_value)
     return lstTokens
 
-# -------------------------------
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs para control structures (IF, WHILE, REPEAT, FOR, ELSE, THEN)
-# -------------------------------
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+
 def checkTK_IF(lstTokens):
     """
     Verifica la estructura del condicional IF asegurando que tenga condición y bloques válidos,
@@ -249,9 +249,10 @@ def checkNestedBrackets(lstTokens):
         return lstTokens if nested_count == 0 else []  #chequea que todos los bloques se cerraron 
     return lstTokens  # si hay error en la estructura
 
-# -------------------------------
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs para proc calls 
-# -------------------------------
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+
 def checkTK_PROC(lstTokens):
     """
     Verifica la estructura de una declaración de procedimiento,
@@ -340,27 +341,196 @@ def checkTK_INSTRUCCION(lstTokens):
         
     lstTokens.pop(0)
     return lstTokens
- 
-# -------------------------------
+
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs de instrucciones
-# -------------------------------
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
  
-def check_TK_GOTO(lstTokens, nombreProc=""):
-    
-    if lstTokens[1][0]==tk.TK_NUMERO:
+def checkTK_GOTO(lstTokens, nombreProc=""):
+    #Quito el goto 
+    lstTokens.pop(0)
+    if (lstTokens[0][0]==tk.TK_NUMERO) or (check_ValidVariable(lstTokens, nombreProc)):
+        #Quito el numero 
         lstTokens.pop(0)
         
-    elif lstTokens[1][0]==tk.TK_NAME:
-        nombreVar=lstTokens[1][1]
-        
-        if not (variables_globales.count(nombreVar)>0):
-            if not(variables_locales):
-                raise Exception()
+        if lstTokens[0][0]==tk.TK_WITH:
+            #Quito el with
+            lstTokens.pop(0)
+            
+            if  check_ValidVariable(lstTokens, nombreProc) or lstTokens[0][0]==tk.TK_NUMERO:
+                lstTokens.pop(0)
+                
+                if lstTokens[0][0]==tk.TK_PUNTO:
+                    lstTokens.pop(0) 
+                else:
+                    raise Exception("token goto")        
+            else:
+                raise Exception("token goto")
+        else:
+            raise Exception("token goto")
     else:
-        raise Exception()
+        raise Exception("token goto")
+
+def checkTK_MOVE(lstTokens, nombreProc=""):
+    lstTokens.pop(0)
+    
+    if lstTokens[0][0]==tk.TK_NUMERO or check_ValidVariable(lstTokens, nombreProc):
+        lstTokens.pop(0)
+        
+        if lstTokens[0][0]==tk.TK_PUNTO:
+            lstTokens.pop(0) 
+        else:
+            raise Exception("token turn")
+        
+    else:
+        raise Exception("token move")
+
+def check_TK_TURN(lstTokens, nombreProc=""):
+    lstTokens.pop(0)
+    
+    if lstTokens[0][0]==tk.TK_LEFT or lstTokens[0][0]==tk.TK_RIGHT or lstTokens[0][0]==tk.TK_AROUND:
+        lstTokens.pop(0)
+        
+        if lstTokens[0][0]==tk.TK_PUNTO:
+            lstTokens.pop(0) 
+        else:
+            raise Exception("token turn")
+    
+    else: 
+        raise Exception("token turn")
+    
+def checkTK_FACE(lstTokens, nombreProc=""):
+    lstTokens.pop(0)
+    
+    if check_Direction_NESW(lstTokens):
+        lstTokens.pop(0)
+        
+        if lstTokens[0][0]==tk.TK_PUNTO:
+            lstTokens.pop(0) 
+        else:
+            raise Exception("token face")
+        
+    else:
+        raise Exception("token face")
  
  
- # type: ignore
+def checkTK_PUT(lstTokens, nombreProc=""):
+    #Quito el goto 
+    lstTokens.pop(0)
+    if (lstTokens[0][0]==tk.TK_NUMERO) or (check_ValidVariable(lstTokens, nombreProc)):
+        #Quito el numero 
+        lstTokens.pop(0)
+        
+        if lstTokens[0][0]==tk.TK_OFTYPE:
+            #Quito el of type
+            lstTokens.pop(0)
+            
+            if  lstTokens[0][0]==tk.TK_BALLOONS or lstTokens[0][0]==tk.TK_CHIPS:
+                lstTokens.pop(0)
+                
+                if lstTokens[0][0]==tk.TK_PUNTO:
+                    lstTokens.pop(0) 
+                else:
+                    raise Exception("token put")        
+            else:
+                raise Exception("token put")
+        else:
+            raise Exception("token put")
+    else:
+        raise Exception("token put")
+
+def checkTK_PICK(lstTokens, nombreProc=""):
+    #Quito el goto 
+    lstTokens.pop(0)
+    if (lstTokens[0][0]==tk.TK_NUMERO) or (check_ValidVariable(lstTokens, nombreProc)):
+        #Quito el numero 
+        lstTokens.pop(0)
+        
+        if lstTokens[0][0]==tk.TK_OFTYPE:
+            #Quito el of type
+            lstTokens.pop(0)
+            
+            if  lstTokens[0][0]==tk.TK_BALLOONS or lstTokens[0][0]==tk.TK_CHIPS:
+                lstTokens.pop(0)
+                
+                if lstTokens[0][0]==tk.TK_PUNTO:
+                    lstTokens.pop(0) 
+                else:
+                    raise Exception("token pick")        
+            else:
+                raise Exception("token pick")
+        else:
+            raise Exception("token pick")
+    else:
+        raise Exception("token pick")
+  
+def checkTK_MOVE(lstTokens, nombreProc=""):
+    #Quito el goto 
+    lstTokens.pop(0)
+    if (lstTokens[0][0]==tk.TK_NUMERO) or (check_ValidVariable(lstTokens, nombreProc)):
+        #Quito el numero 
+        lstTokens.pop(0)
+        
+        if lstTokens[0][0]==tk.TK_TOTHE:
+            lstTokens.pop(0)
+            
+            if  check_Direction_FBLR(lstTokens):
+                lstTokens.pop(0)
+                
+                if lstTokens[0][0]==tk.TK_PUNTO:
+                    lstTokens.pop(0) 
+                else:
+                    raise Exception("token pick")        
+            else:
+                raise Exception("token pick")
+        else:
+            raise Exception("token pick")
+    else:
+        raise Exception("token pick")
+    
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# funcs de auxiliares
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤ 
+
+#Chequea si el token es una variable valida de tipo TK_NAME
+def check_ValidVariable(lstTokens, nombreProc="")->bool:
+    nombreVar=lstTokens[0][1]
+    
+    if lstTokens[0][0]==tk.TK_NAME:
+        if variables_globales.count(nombreVar)>0:
+            return True
+        elif variables_locales.get(nombreProc) is not None:
+            return True
+        else:
+            return False
+    else:
+        return False
+
+def check_Direction_NESW(lstTokens)->bool:
+    if lstTokens[0][0]==tk.TK_EAST:
+        return True
+    elif lstTokens[0][0]==tk.TK_NORTH:
+        return True
+    elif lstTokens[0][0]==tk.TK_SOUTH:
+        return True
+    elif lstTokens[0][0]==tk.TK_WEST:
+        return True
+    else:
+        return False
+    
+def check_Direction_FBLR(lstTokens)->bool:
+    if lstTokens[0][0]==tk.TK_FRONT:
+        return True
+    elif lstTokens[0][0]==tk.TK_RIGHT:
+        return True
+    elif lstTokens[0][0]==tk.TK_BACK:
+        return True
+    elif lstTokens[0][0]==tk.TK_RIGHT:
+        return True
+    else:
+        return False
+
+# type: ignore
  
  
 procedures=[]
