@@ -525,7 +525,7 @@ def check_Direction_FBLR(lstTokens)->bool:
         return True
     elif lstTokens[0][0]==tk.TK_BACK:
         return True
-    elif lstTokens[0][0]==tk.TK_RIGHT:
+    elif lstTokens[0][0]==tk.TK_LEFT:
         return True
     else:
         return False
