@@ -53,7 +53,7 @@ def parserMain(lstTokens)-> bool:
                     elif not boolIf or not boolInst:
                         raise Exception("menu parser")
             else:
-                raise Exception()
+                raise Exception("menu parser")
                 
     except:
         correcta=False
@@ -341,6 +341,17 @@ def checkTK_INSTRUCCION(lstTokens):
  
 def checkTK_VAR_DIV(lstTokens, nombreProc=""):
     lstTokens.pop(0) 
+    
+    boolVarDivReached=False
+    
+    while not boolVarDivReached:
+        if lstTokens[0][0]==tk.TK_NAME:
+            lstTokens.pop(0)
+        elif lstTokens[0][0]==tk.TK_VAR_DIV:
+            lstTokens.pop(0)
+            boolVarDivReached=True
+        else:
+            raise Exception()
  
  
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
