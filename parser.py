@@ -5,85 +5,56 @@ def parserMain(lstTokens)-> bool:
     correcta=True
     
     try:
+        if token[0]==tk.TK_VAR_DIV:
+            checkTK_VAR_DIV(lstTokens)
+                
         while len(lstTokens)!=0:
             token=lstTokens[0]
-            
-            if token[0]==tk.TK_Name:
-                checkTK_NAME(lstTokens)
-            elif token[0]==tk.TK_VAR_DIV:
-                checkTK_VAR_DIV(lstTokens)
-            elif token[0]==tk.TK_VAR_ASSIGN:
-                checkTK_VAR_ASSIGN(lstTokens)
-            elif token[0]==tk.TK_PROC:
-                proc_name=checkTK_PROC(lstTokens)
-                opcionesInstrucciones(lstTokens, proc_name)
-                opcionesIfLoopFor(lstTokens, proc_name)
-            elif token[0]==tk.TK_CODEBLOCK_DIVLEFT:
-                checkTK_CODEBLOCK_DIVLEFT(lstTokens)
-                opcionesInstrucciones(lstTokens)
-                opcionesIfLoopFor(lstTokens)
-            #elif token[0]==tk.TK_CODEBLOCK_DIVRIGHT:
-                #checkTK_CODEBLOCK_DIVRIGHT(lstTokens)
-            elif token[0]==tk.TK_LEFT:
-                checkTK_LEFT(lstTokens)
-            elif token[0]==tk.TK_RIGHT:
-                checkTK_RIGHT(lstTokens)
-            elif token[0]==tk.TK_AROUND:
-                checkTK_AROUND(lstTokens)
-            elif token[0]==tk.TK_BACK:
-                checkTK_BACK(lstTokens)
-            elif token[0]==tk.TK_FRONT:
-                checkTK_FRONT(lstTokens)
-            elif token[0]==tk.TK_NORTH:
-                checkTK_NORTH(lstTokens)
-            elif token[0]==tk.TK_SOUTH:
-                checkTK_SOUTH(lstTokens)
-            elif token[0]==tk.TK_WEST:
-                checkTK_WEST(lstTokens)
-            elif token[0]==tk.TK_EAST:
-                checkTK_EAST(lstTokens)
-            elif token[0]==tk.TK_BALLOONS:
-                checkTK_BALLOONS(lstTokens)
-            elif token[0]==tk.TK_CHIPS:
-                checkTK_CHIPS(lstTokens)
-            elif token[0]==tk.TK_TOTHE:
-                checkTK_TOTHE(lstTokens)
-            elif token[0]==tk.TK_INDIR:
-                checkTK_INDIR(lstTokens)
-            elif token[0]==tk.TK_NOP:
-                checkTK_NOP(lstTokens)
-            elif token[0]==tk.TK_PUNTO:
-                checkTK_PUNTO(lstTokens)
-            elif token[0]==tk.TK_NUMERO:
-                checkTK_NUMERO(lstTokens)
-            elif token[0]==tk.TK_NAMEPUNTOS:
-                checkTK_NAMEPUNTOS(lstTokens)
-            else:
-                checkTK_Name(lstTokens)
                 
-            """ elif token[0]==tk.TK_THEN:
-                checkTK_THEN(lstTokens)
-            elif token[0]==tk.TK_ELSE:
-                checkTK_ELSE(lstTokens)
-            elif token[0]==tk.TK_DO:
-                checkTK_DO(lstTokens)
-            elif token[0]==tk.TK_REPEAT:
-                checkTK_REPEAT(lstTokens)
-            elif token[0]==tk.TK_WITH:
-                checkTK_WITH(lstTokens)
-            elif token[0]==tk.TK_FACING:
-                checkTK_FACING(lstTokens)
-            elif token[0]==tk.TK_CANPUT:
-                checkTK_CANPUT(lstTokens)
-            elif token[0]==tk.TK_CANPICK:
-                checkTK_CANPICK(lstTokens)
-            elif token[0]==tk.TK_CANMOVE:
-                checkTK_CANMOVE(lstTokens)
-            elif token[0]==tk.TK_CANJUMP:
-                checkTK_CANJUMP(lstTokens)
-            elif token[0]==tk.TK_NOT:
-                checkTK_NOT(lstTokens)
-            """
+            if token[0]==tk.TK_PROC:
+                procName_sublistTokens=checkTK_PROC(lstTokens)
+                proc_name=procName_sublistTokens[0]
+                sublistTokens=procName_sublistTokens[1]
+                
+                if token[0]==tk.TK_VAR_DIV:
+                    checkTK_VAR_DIV(sublistTokens, proc_name)
+                    
+                while len(sublistTokens)!=0: 
+                    boolInst=opcionesInstrucciones(sublistTokens, proc_name)
+                    boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
+                    
+                    if token[0]==tk.TK_NUMERO:
+                        checkTK_NUMERO(sublistTokens)
+                    elif token[0]==tk.TK_NAMEPUNTOS:
+                        checkTK_NAMEPUNTOS(sublistTokens)
+                    elif token[0]==tk.TK_NAME:
+                        checkTK_NAME(sublistTokens)
+                    elif token[0]==tk.TK_VAR_ASSIGN:
+                        checkTK_VAR_ASSIGN(sublistTokens)
+                    elif not boolIf or not boolInst:
+                        raise Exception("menu parser")
+
+                    
+            elif token[0]==tk.TK_CODEBLOCK_DIVLEFT:
+                sublistTokens=checkTK_CODEBLOCK_DIVLEFT(lstTokens)
+                
+                while len(sublistTokens)!=0: 
+                    boolInst=opcionesInstrucciones(sublistTokens, proc_name)
+                    boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
+                    
+                    if token[0]==tk.TK_NUMERO:
+                        checkTK_NUMERO(sublistTokens)
+                    elif token[0]==tk.TK_NAMEPUNTOS:
+                        checkTK_NAMEPUNTOS(sublistTokens)
+                    elif token[0]==tk.TK_NAME:
+                        checkTK_NAME(sublistTokens)
+                    elif token[0]==tk.TK_VAR_ASSIGN:
+                        checkTK_VAR_ASSIGN(sublistTokens)
+                    elif not boolIf or not boolInst:
+                        raise Exception("menu parser")
+            else:
+                raise Exception()
+                
     except:
         correcta=False
     
@@ -94,20 +65,33 @@ def opcionesInstrucciones(lstTokens, nombreProc=""):
     
     if token[0]==tk.TK_GOTO:
         checkTK_GOTO(lstTokens, nombreProc)
+        return True
     elif token[0]==tk.TK_PICK:
         checkTK_PICK(lstTokens, nombreProc)
+        return True
     elif token[0]==tk.TK_MOVE:
         checkTK_MOVE(lstTokens,nombreProc)
+        return True
     elif token[0]==tk.TK_TURN:
         checkTK_TURN(lstTokens,nombreProc)
+        return True
     elif token[0]==tk.TK_FACE:
         checkTK_FACE(lstTokens,nombreProc)
+        return True
     elif token[0]==tk.TK_MOVE:
         checkTK_MOVE(lstTokens,nombreProc)
+        return True
     elif token[0]==tk.TK_PUT:
         checkTK_PUT(lstTokens,nombreProc)
+        return True
     elif token[0]==tk.TK_JUMP:
         checkTK_JUMP(lstTokens,nombreProc)
+        return True
+    elif token[0]==tk.TK_NOP:
+        checkTK_NOP(lstTokens)
+        return True
+    else:
+        return False
 
 
 def opcionesIfLoopFor(lstTokens, nombreProc=""):
@@ -115,10 +99,15 @@ def opcionesIfLoopFor(lstTokens, nombreProc=""):
 
     if token[0]==tk.TK_IF:
         checkTK_IF(lstTokens, nombreProc)
+        return True
     elif token[0]==tk.TK_WHILE:
         checkTK_WHILE(lstTokens, nombreProc)
+        return True
     elif token[0]==tk.TK_FOR:
         checkTK_FOR(lstTokens, nombreProc)
+        return True
+    else:
+        return False
 
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs para chequear tipos de nombres y números
@@ -347,6 +336,14 @@ def checkTK_INSTRUCCION(lstTokens):
     return lstTokens
 
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# funcs de variable declarations
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+ 
+def checkTK_VAR_DIV(lstTokens, nombreProc=""):
+    lstTokens.pop(0) 
+ 
+ 
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs de instrucciones
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
  
@@ -384,7 +381,7 @@ def checkTK_MOVE(lstTokens, nombreProc=""):
         if lstTokens[0][0]==tk.TK_PUNTO:
             lstTokens.pop(0) 
         else:
-            raise Exception("token turn")
+            raise Exception("token move")
         
     else:
         raise Exception("token move")
@@ -544,7 +541,7 @@ def checkTK_JUMP(lstTokens, nombreProc=""):
     else:
         raise Exception("token JUMP")
 
-def check_TKNOP(lstTokens, nombreProc=""):
+def checkTK_NOP(lstTokens, nombreProc=""):
     lstTokens.pop(0)    
     if lstTokens[0][0]==tk.TK_PUNTO:
         lstTokens.pop(0) 
