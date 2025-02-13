@@ -90,6 +90,8 @@ def parserMain(lstTokens)-> bool:
     return correcta
     
 def opcionesInstrucciones(lstTokens, nombreProc=""):
+    token = lstTokens[0]
+    
     if token[0]==tk.TK_GOTO:
         checkTK_GOTO(lstTokens, nombreProc)
     elif token[0]==tk.TK_PICK:
@@ -109,6 +111,8 @@ def opcionesInstrucciones(lstTokens, nombreProc=""):
 
 
 def opcionesIfLoopFor(lstTokens, nombreProc=""):
+    token = lstTokens[0]
+
     if token[0]==tk.TK_IF:
         checkTK_IF(lstTokens, nombreProc)
     elif token[0]==tk.TK_WHILE:
@@ -385,7 +389,7 @@ def checkTK_MOVE(lstTokens, nombreProc=""):
     else:
         raise Exception("token move")
 
-def check_TK_TURN(lstTokens, nombreProc=""):
+def checkTK_TURN(lstTokens, nombreProc=""):
     lstTokens.pop(0)
     
     if lstTokens[0][0]==tk.TK_LEFT or lstTokens[0][0]==tk.TK_RIGHT or lstTokens[0][0]==tk.TK_AROUND:
@@ -502,6 +506,50 @@ def checkTK_MOVE(lstTokens, nombreProc=""):
     else:
         raise Exception("token MOVE")
 
+def checkTK_JUMP(lstTokens, nombreProc=""):
+    #Quito el goto 
+    lstTokens.pop(0)
+    if (lstTokens[0][0]==tk.TK_NUMERO) or (check_ValidVariable(lstTokens, nombreProc)):
+        #Quito el numero 
+        lstTokens.pop(0)
+        
+        if lstTokens[0][0]==tk.TK_TOTHE:
+            lstTokens.pop(0)
+            
+            if  check_Direction_FBLR(lstTokens):
+                lstTokens.pop(0)
+                
+                if lstTokens[0][0]==tk.TK_PUNTO:
+                    lstTokens.pop(0) 
+                else:
+                    raise Exception("token JUMP")        
+            else:
+                raise Exception("token JUMP")
+            
+        elif lstTokens[0][0]==tk.TK_INDIR:
+            lstTokens.pop(0)
+            
+            if  check_Direction_NESW(lstTokens):
+                lstTokens.pop(0)
+                
+                if lstTokens[0][0]==tk.TK_PUNTO:
+                    lstTokens.pop(0) 
+                else:
+                    raise Exception("token JUMP")        
+            else:
+                raise Exception("token JUMP")
+
+        else:
+            raise Exception("token JUMP")
+    else:
+        raise Exception("token JUMP")
+
+def check_TKNOP(lstTokens, nombreProc=""):
+    lstTokens.pop(0)    
+    if lstTokens[0][0]==tk.TK_PUNTO:
+        lstTokens.pop(0) 
+    else:
+        raise Exception("token nop")  
     
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs de auxiliares
