@@ -281,40 +281,7 @@ def checkTK_PROCCALL(lstTokens):
     lstTokens.pop(0)  # el punto
     return lstTokens
 
-def checkTK_INSTRUCCION(lstTokens):
-   
-    if not lstTokens:
-        return lstTokens
-        
-    token_type = lstTokens[0][0]
-    valid_instructions = [
-        tk.TK_MOVE, tk.TK_TURN, tk.TK_FACE, tk.TK_PUT, 
-        tk.TK_PICK, tk.TK_JUMP, tk.TK_NOP, tk.TK_GOTO,
-        tk.TK_WITH, tk.TK_TOTHE, tk.TK_INDIR
-    ]
-    
-    if token_type not in valid_instructions:
-        return lstTokens
-        
-    lstTokens.pop(0)
-    
-    #chequea cositass especificas segun el tipo de instrucción
-    if token_type in [tk.TK_TURN, tk.TK_FACE]:
-        if not lstTokens or lstTokens[0][0] not in [tk.TK_NORTH, tk.TK_SOUTH, tk.TK_EAST, tk.TK_WEST,
-                                            tk.TK_LEFT, tk.TK_RIGHT, tk.TK_AROUND, tk.TK_BACK, tk.TK_FRONT]:
-            return lstTokens
-        lstTokens.pop(0)
-    elif token_type in [tk.TK_PUT, tk.TK_PICK]:
-        if not lstTokens or lstTokens[0][0] not in [tk.TK_BALLOONS, tk.TK_CHIPS]:
-            return lstTokens
-        lstTokens.pop(0)
-    
-    # miro que termine con punto
-    if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
-        return lstTokens
-        
-    lstTokens.pop(0)
-    return lstTokens
+
 
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs de variable declarations
