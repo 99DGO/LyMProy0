@@ -114,10 +114,7 @@ def opcionesIfLoopFor(lstTokens, nombreProc=""):
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
 def checkTK_NAME(lstTokens):
-    """
-    Verifica si el token actual es un nombre válido.
-    Si es un nombre suelto, eliminar comas innecesarias y determinar si es un nombre o número.
-    """
+    
     token_type, token_value = lstTokens[0]
     if token_type == tk.TK_UNKNOWN:
         if token_value.replace('.', '', 1).isdigit():
@@ -129,18 +126,14 @@ def checkTK_NAME(lstTokens):
     return lstTokens
 
 def checkTK_NUMERO(lstTokens):
-    """
-    Verifica si un token es un número y lo clasifica correctamente.
-    """
+    
     token_type, token_value = lstTokens[0]
     if token_type == tk.TK_UNKNOWN and token_value.replace('.', '', 1).isdigit():
         lstTokens[0] = (tk.TK_NUMERO, token_value)
     return lstTokens
 
 def checkTK_NAMEPUNTOS(lstTokens):
-    """
-    Verifica si un token representa un nombre con puntos (:), como nombres de procedimientos.
-    """
+    
     token_type, token_value = lstTokens[0]
     if token_type == tk.TK_UNKNOWN and ':' in token_value:
         lstTokens[0] = (tk.TK_NAMEPUNTOS, token_value)
@@ -151,10 +144,7 @@ def checkTK_NAMEPUNTOS(lstTokens):
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
 def checkTK_IF(lstTokens):
-    """
-    Verifica la estructura del condicional IF asegurando que tenga condición y bloques válidos,
-    permitiendo anidamiento de corchetes y verificando que se cierren correctamente.
-    """
+    
     if lstTokens and lstTokens[0][0] == tk.TK_IF:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] in [tk.TK_FACING, tk.TK_CANMOVE, tk.TK_CANJUMP, tk.TK_NOT]:
@@ -165,10 +155,7 @@ def checkTK_IF(lstTokens):
     return lstTokens  # error en la estructura de IF
 
 def checkTK_WHILE(lstTokens):
-    """
-    Verifica la estructura del loop WHILE asegurándose de que tenga condición y bloque válido,
-    permitiendo anidamiento de corchetes y verificando que se cierren correctamente.
-    """
+
     if lstTokens and lstTokens[0][0] == tk.TK_WHILE:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] in [tk.TK_FACING, tk.TK_CANMOVE, tk.TK_CANJUMP, tk.TK_NOT]:
@@ -179,10 +166,7 @@ def checkTK_WHILE(lstTokens):
     return lstTokens  # error en la estructura de WHILE
 
 def checkTK_REPEAT(lstTokens):
-    """
-    Verifica la estructura del loop REPEAT asegurando que tenga
-    un número de repeticiones válido y un bloque de código.
-    """
+    
     if lstTokens and lstTokens[0][0] == tk.TK_REPEAT:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] in [tk.TK_NUMERO, tk.TK_NAME]:
@@ -191,10 +175,7 @@ def checkTK_REPEAT(lstTokens):
     return lstTokens  # error en la estructura de REPEAT
 
 def checkTK_FOR(lstTokens):
-    """
-    Verifica la estructura del loop FOR asegurando que tenga una variable,
-    un rango válido y un bloque de código.
-    """
+  
     if lstTokens and lstTokens[0][0] == tk.TK_FOR:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] == tk.TK_NAME:  # variable del for
@@ -207,10 +188,7 @@ def checkTK_FOR(lstTokens):
     return lstTokens  # error en la estructura de FOR
 
 def checkTK_ELSE(lstTokens):
-    """
-    Verifica la estructura del bloque ELSE asegurando que tenga
-    un bloque de código válido.
-    """
+    
     if lstTokens and lstTokens[0][0] == tk.TK_ELSE:
         lstTokens.pop(0)
         return checkNestedBrackets(lstTokens)
@@ -226,21 +204,27 @@ def checkTK_THEN(lstTokens):
         return checkNestedBrackets(lstTokens)
     return lstTokens  # no es un then, continua
 
-def checkNestedBrackets(lstTokens):
-    """
-    Función auxiliar que verifica anidamiento de corchetes.
-    """
+def checkNestedBrackets(lstTokens, sublistTokens):
+    
     if lstTokens and lstTokens[0][0] == tk.TK_CODEBLOCK_DIVLEFT:
         lstTokens.pop(0)
         nested_count = 1
+        
         while lstTokens and nested_count > 0:
-            if lstTokens[0][0] == tk.TK_CODEBLOCK_DIVLEFT:
+            token = lstTokens[0]
+            
+            if token[0] == tk.TK_CODEBLOCK_DIVLEFT:
                 nested_count += 1
-            elif lstTokens[0][0] == tk.TK_CODEBLOCK_DIVRIGHT:
+                lstTokens.pop(0)
+            elif token[0] == tk.TK_CODEBLOCK_DIVRIGHT:
                 nested_count -= 1
-            lstTokens.pop(0)
-        return lstTokens if nested_count == 0 else []  #chequea que todos los bloques se cerraron 
-    return lstTokens  # si hay error en la estructura
+                lstTokens.pop(0)
+            else:
+                # Si no es un corchete, agregar a la sublista de parserMain
+                sublistTokens.append(lstTokens.pop(0))
+                
+        return sublistTokens if nested_count == 0 else []
+    return lstTokens
 
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs para proc calls 
@@ -298,10 +282,7 @@ def checkTK_PROCCALL(lstTokens):
     return lstTokens
 
 def checkTK_INSTRUCCION(lstTokens):
-    """
-    Revisa que una instrucción básica esté correctamente formada.
-    Instrucciones como: move, turn, face, put, pick, jump, etc.
-    """
+   
     if not lstTokens:
         return lstTokens
         
@@ -550,7 +531,7 @@ def checkTK_NOP(lstTokens, nombreProc=""):
     
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs de auxiliares
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤ 
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
 #Chequea si el token es una variable valida de tipo TK_NAME
 def check_ValidVariable(lstTokens, nombreProc="")->bool:
