@@ -1,0 +1,6 @@
+| nom x y one |
+
+proc putChips [
+goto: 1 with: 2
+ ]
+

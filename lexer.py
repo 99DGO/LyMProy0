@@ -1,5 +1,4 @@
 import tokens as tk
-import variables as var
 
 #Retorna una lista que contiene tuplas adentro.
 #Primer elemento de la tupla es el tipo de token, segundo elemento es mas para los nombres de cosas

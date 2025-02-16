@@ -1,0 +1,2 @@
+proc putChips [
+with: 2 ]
