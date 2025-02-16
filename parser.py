@@ -1,6 +1,9 @@
 import tokens as tk
 import traceback 
-
+ 
+procedures=[]
+variables_globales=[]
+variables_locales=dict()
 
 def parserMain(lstTokens)-> bool:
     correcta=True
@@ -297,6 +300,11 @@ def checkTK_VAR_DIV(lstTokens, nombreProc=""):
     while not boolVarDivReached:
         if lstTokens[0][0]==tk.TK_NAME:
             lstTokens.pop(0)
+            if nombreProc=="":
+                variables_globales.append(lstTokens[0][1])
+            else:
+                lstVar=variables_locales.get(nombreProc)
+                lstVar.append(lstTokens[0][1])
         elif lstTokens[0][0]==tk.TK_VAR_DIV:
             lstTokens.pop(0)
             boolVarDivReached=True
@@ -521,7 +529,11 @@ def check_ValidVariable(lstTokens, nombreProc="")->bool:
         if variables_globales.count(nombreVar)>0:
             return True
         elif variables_locales.get(nombreProc) is not None:
-            return True
+            lstVar=variables_locales.get(nombreProc)
+            if nombreVar in lstVar:
+                return True
+            else:
+                return False
         else:
             return False
     else:
@@ -553,7 +565,3 @@ def check_Direction_FBLR(lstTokens)->bool:
 
 # type: ignore
  
- 
-procedures=[]
-variables_globales=[]
-variables_locales=dict()
