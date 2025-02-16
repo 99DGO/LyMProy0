@@ -235,17 +235,46 @@ def checkNestedBrackets(lstTokens, sublistTokens):
 # funcs para proc calls 
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
+
 def checkTK_PROC(lstTokens):
-    """
-    Verifica la estructura de una declaración de procedimiento,
-    asegurando que tenga un nombre válido y un bloque correctamente cerrado.
-    """
+    
     if lstTokens and lstTokens[0][0] == tk.TK_PROC:
         lstTokens.pop(0)
-        if lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:
+        
+        # chequea si es un nombre simple o con parámetros
+        if lstTokens and lstTokens[0][0] == tk.TK_NAME:  # caso sin parámetros
+            proc_name = lstTokens[0][1]
+            procedures.append(proc_name)
+            variables_locales[proc_name] = []  # proc sin parámetros
             lstTokens.pop(0)
-            return checkNestedBrackets(lstTokens)
-    return lstTokens  #no es un proc, continua 
+            return [proc_name, checkNestedBrackets(lstTokens, sublistTokens)]
+            
+        elif lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:  # caso con parámetros
+            proc_name = lstTokens[0][1].rstrip(':')  # quito los : del nombre
+            procedures.append(proc_name)
+            variables_locales[proc_name] = []  #lista de params
+            lstTokens.pop(0)
+            
+            # procesar parametros hasta encontrar '['
+            while lstTokens and lstTokens[0][0] == tk.TK_NAME:
+                param_name = lstTokens[0][1]
+                variables_locales[proc_name].append(param_name)  # agrego param a la lista del proc
+                lstTokens.pop(0)
+                
+                # si hay mas parámetros, debe venir ':'
+                if lstTokens and lstTokens[0][0] != tk.TK_CODEBLOCK_DIVLEFT:
+                    if lstTokens[0][0] == tk.TK_DOSPUNTOS:
+                        lstTokens.pop(0)
+                        # luego de ':' debe venir otro nombre
+                        if not (lstTokens and lstTokens[0][0] == tk.TK_NAME):
+                            raise Exception("se esperaba un nombre después de ':'")
+                    else:
+                        raise Exception("se esperaba ':' o '[' después del parámetro")
+            
+            return [proc_name, checkNestedBrackets(lstTokens, sublistTokens)]
+            
+    return lstTokens  # no es un proc, continua
+
 
 def checkTK_VAR_ASSIGN(lstTokens):
     """
@@ -517,7 +546,7 @@ def checkTK_NOP(lstTokens, nombreProc=""):
     else:
         raise Exception("token nop")  
     
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 # funcs de auxiliares
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
