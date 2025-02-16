@@ -1,8 +1,10 @@
 import tokens as tk
+import traceback 
 
 
 def parserMain(lstTokens)-> bool:
     correcta=True
+    token=lstTokens[0]
     
     try:
         if token[0]==tk.TK_VAR_DIV:
@@ -53,10 +55,10 @@ def parserMain(lstTokens)-> bool:
                     elif not boolIf or not boolInst:
                         raise Exception("menu parser")
             else:
-                raise Exception("menu parser")
-                
-    except:
+                raise Exception("menu parser")          
+    except Exception as e:
         correcta=False
+        traceback.print_exc()
     
     return correcta
     

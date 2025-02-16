@@ -1,7 +1,8 @@
 import lexer as lx
 import parser as ps
 
-lstArchivos = ["TrueGoTo.txt", "FalseGoTo.txt","FalseGoTo2.txt", "FalseGoTo3.txt"]
+lstArchivos = ["TrueGoTo.txt"]
+#, "FalseGoTo.txt","FalseGoTo2.txt", "FalseGoTo3.txt"]
 
 for archName in lstArchivos:
     codigo = ""

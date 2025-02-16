@@ -1,6 +1,5 @@
-| nom x y one |
 
-proc putChips [
-goto: 1 with: 2
+proc putChips: n [
+goto: n with: 2
  ]
 
