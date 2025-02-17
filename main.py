@@ -1,6 +1,7 @@
 import lexer as lx
 import parser as ps
 
+####Escriban aca el nombre del archivo:
 archivo = 'code-examples.txt'
 codigo = ""
 
@@ -17,7 +18,3 @@ if correcto:
 else:
     print(False)
 
-"""
-for token in lstTokens:
-    print(token)
-"""
