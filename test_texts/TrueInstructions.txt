@@ -45,6 +45,10 @@ jump: 4 inDir: #west .
 
  ]
 
-proc nothing [
+[
     nop .
+    jump: 2 inDir: #north .
+    jump: 2 inDir: #south .
+    jump: 2 inDir: #east .
+    jump: 2 inDir: #west .
 ]
