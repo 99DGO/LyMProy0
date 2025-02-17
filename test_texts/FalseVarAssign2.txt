@@ -1,1 +1,8 @@
-x := #invalid .  # Valor inválido (no es número ni variable) 
+defVar x
+defProc test [
+    # Caso 5: Variable asignada a una expresión inválida
+    x := 2 + 3.
+    
+    # Caso 6: Múltiples asignaciones en una línea
+    x := y := 5.
+] 

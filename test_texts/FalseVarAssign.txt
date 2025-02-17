@@ -1,1 +1,14 @@
-123 := x .  # Variable inválida (número) 
+defVar x
+defProc test [
+    # Caso 1: Falta el :=
+    x 5.
+    
+    # Caso 2: Valor inválido después del :=
+    x := #north.
+    
+    # Caso 3: Variable no declarada
+    y := 10.
+    
+    # Caso 4: Falta el valor después del :=
+    x := .
+] 

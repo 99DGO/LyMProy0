@@ -82,4 +82,23 @@ proc complexProc: a b: c [
         move: b .
         put: c ofType: #chips .
     ]
+]
+
+defVar nom
+defVar x
+defVar y
+defProc putCB [
+    put: 1 ofType: chips.
+    put: 2 ofType: balloons.
+]
+defProc goNorth [
+    while: canMove: 1 inDir: #north do: [
+        move: 1 InDir: #north.
+    ]
+]
+defProc goWest:n [
+    x := n.
+    while: canMove: x inDir: #west do: [
+        move: x InDir: #west.
+    ]
 ] 
