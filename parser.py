@@ -20,18 +20,44 @@ def parserMain(lstTokens)-> bool:
                 procName_sublistTokens=checkTK_PROC(lstTokens)
                 proc_name=procName_sublistTokens[0]
                 sublistTokens=procName_sublistTokens[1]
-                token=sublistTokens[0];
+
+                if not len(sublistTokens)==0:
+                    token=sublistTokens[0];
+                    
+                    if token[0]==tk.TK_VAR_DIV:
+                        checkTK_VAR_DIV(sublistTokens, proc_name)
+                        
+                    while len(sublistTokens)!=0: 
+                        token=sublistTokens[0];
+                        boolInst=opcionesInstrucciones(sublistTokens, proc_name)
+                        
+                        if not len(sublistTokens)==0:
+                            token=sublistTokens[0];
+                            boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
+                            
+                            if token[0]==tk.TK_NUMERO:
+                                checkTK_NUMERO(sublistTokens)
+                            elif token[0]==tk.TK_NAMEPUNTOS:
+                                checkTK_NAMEPUNTOS(sublistTokens)
+                            elif token[0]==tk.TK_NAME:
+                                checkTK_NAME(sublistTokens)
+                            elif token[0]==tk.TK_VAR_ASSIGN:
+                                checkTK_VAR_ASSIGN(sublistTokens)
+                            elif not boolIf and not boolInst:
+                                raise Exception("menu parser")
+
+                    
+            elif token[0]==tk.TK_CODEBLOCK_DIVLEFT:
+                sublistTokens=[]
+                sublistTokens=checkNestedBrackets(lstTokens, sublistTokens)
                 
-                if token[0]==tk.TK_VAR_DIV:
-                    checkTK_VAR_DIV(sublistTokens, proc_name)
-                    
                 while len(sublistTokens)!=0: 
+                    token=sublistTokens[0];
                     boolInst=opcionesInstrucciones(sublistTokens, proc_name)
-                    boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
-                    
+
                     if not len(sublistTokens)==0:
                         token=sublistTokens[0];
-                        
+                        boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
                         if token[0]==tk.TK_NUMERO:
                             checkTK_NUMERO(sublistTokens)
                         elif token[0]==tk.TK_NAMEPUNTOS:
@@ -42,32 +68,11 @@ def parserMain(lstTokens)-> bool:
                             checkTK_VAR_ASSIGN(sublistTokens)
                         elif not boolIf and not boolInst:
                             raise Exception("menu parser")
-
-                    
-            elif token[0]==tk.TK_CODEBLOCK_DIVLEFT:
-                sublistTokens=[]
-                sublistTokens=checkNestedBrackets(lstTokens, sublistTokens)
-                token=sublistTokens[0];
-                
-                while len(sublistTokens)!=0: 
-                    boolInst=opcionesInstrucciones(sublistTokens, proc_name)
-                    boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
-                    
-                    if token[0]==tk.TK_NUMERO:
-                        checkTK_NUMERO(sublistTokens)
-                    elif token[0]==tk.TK_NAMEPUNTOS:
-                        checkTK_NAMEPUNTOS(sublistTokens)
-                    elif token[0]==tk.TK_NAME:
-                        checkTK_NAME(sublistTokens)
-                    elif token[0]==tk.TK_VAR_ASSIGN:
-                        checkTK_VAR_ASSIGN(sublistTokens)
-                    elif not boolIf and not boolInst:
-                        raise Exception("menu parser")
             else:
                 raise Exception("menu parser")          
     except Exception as e:
         correcta=False
-        traceback.print_exc()
+        #traceback.print_exc()
     
     return correcta
     
