@@ -45,7 +45,8 @@ def parserMain(lstTokens)-> bool:
 
                     
             elif token[0]==tk.TK_CODEBLOCK_DIVLEFT:
-                sublistTokens=checkNestedBrackets(lstTokens)
+                sublistTokens=[]
+                sublistTokens=checkNestedBrackets(lstTokens, sublistTokens)
                 token=sublistTokens[0];
                 
                 while len(sublistTokens)!=0: 
@@ -60,13 +61,13 @@ def parserMain(lstTokens)-> bool:
                         checkTK_NAME(sublistTokens)
                     elif token[0]==tk.TK_VAR_ASSIGN:
                         checkTK_VAR_ASSIGN(sublistTokens)
-                    elif not boolIf or not boolInst:
+                    elif not boolIf and not boolInst:
                         raise Exception("menu parser")
             else:
                 raise Exception("menu parser")          
     except Exception as e:
         correcta=False
-        #traceback.print_exc()
+        traceback.print_exc()
     
     return correcta
     
