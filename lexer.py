@@ -118,6 +118,8 @@ def checkIfToken(subString)-> str:
         return (tk.TK_WITH, "")
     elif subString==tk.TK_MOVE:
         return (tk.TK_MOVE, "")
+    elif subString==tk.TK_JUMP:
+        return (tk.TK_JUMP, "")
     elif subString==tk.TK_TURN:
         return (tk.TK_TURN, "")
     elif subString==tk.TK_LEFT:
