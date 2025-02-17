@@ -133,30 +133,11 @@ def opcionesIfLoopFor(lstTokens, nombreProc=""):
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
 def checkTK_NAME(lstTokens):
-    
-    token_type, token_value = lstTokens[0]
-    if token_type == tk.TK_UNKNOWN:
-        if token_value.replace('.', '', 1).isdigit():
-            lstTokens[0] = (tk.TK_NUMERO, token_value)
-        elif ':' in token_value:
-            lstTokens[0] = (tk.TK_NAMEPUNTOS, token_value)
-        else:
-            lstTokens[0] = (tk.TK_NAME, token_value)
+
+    if lstTokens and lstTokens[0][0] == tk.TK_NAME:
+        return checkTK_VAR_ASSIGN(lstTokens)
     return lstTokens
 
-def checkTK_NUMERO(lstTokens):
-    
-    token_type, token_value = lstTokens[0]
-    if token_type == tk.TK_UNKNOWN and token_value.replace('.', '', 1).isdigit():
-        lstTokens[0] = (tk.TK_NUMERO, token_value)
-    return lstTokens
-
-def checkTK_NAMEPUNTOS(lstTokens):
-    
-    token_type, token_value = lstTokens[0]
-    if token_type == tk.TK_UNKNOWN and ':' in token_value:
-        lstTokens[0] = (tk.TK_NAMEPUNTOS, token_value)
-    return lstTokens
 
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 # funcs para control structures (IF, WHILE, REPEAT, FOR, ELSE, THEN)
@@ -338,7 +319,6 @@ def checkTK_PROC(lstTokens):
 
 
 def checkTK_VAR_ASSIGN(lstTokens):
-    
     if lstTokens and lstTokens[0][0] == tk.TK_NAME:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] == tk.TK_VAR_ASSIGN:

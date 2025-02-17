@@ -1,0 +1,8 @@
+# Caso 7: Asignación fuera de un procedimiento
+defVar x
+x := 5.
+
+defProc test [
+    # Caso 8: Asignación a una constante
+    2 := x.
+] 
