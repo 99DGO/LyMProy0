@@ -1,0 +1,5 @@
+proc testWhile [
+    while: canMove: "no-number" do: [  # Número inválido
+        move: 1 .
+    ]
+] 

@@ -1,0 +1,85 @@
+|x y z|
+
+proc controlStructures: n m [
+    |local1 local2|
+    
+    # IF tests
+    if: facing: #north then: [
+        move: 1 .
+    ]
+    
+    if: canMove: n then: [
+        move: n .
+    ]
+    
+    if: canPut: m ofType: #chips then: [
+        put: m ofType: #chips .
+    ]
+    
+    if: canPick: local1 ofType: #balloons then: [
+        pick: local1 ofType: #balloons .
+    ]
+    
+    if: canJump: 2 then: [
+        jump: 2 .
+    ]
+    
+    if: not: facing: #south then: [
+        turn: #around .
+    ]
+    
+    # WHILE tests
+    while: canMove: n do: [
+        move: n .
+        if: canPut: 1 ofType: #chips then: [
+            put: 1 ofType: #chips .
+        ]
+    ]
+    
+    while: facing: #east do: [
+        turn: #right .
+    ]
+    
+    # FOR tests
+    for: local2 1 10 [
+        put: local2 ofType: #balloons .
+    ]
+    
+    for: x n m [
+        move: x .
+    ]
+    
+    # REPEAT tests
+    repeat: 5 [
+        turn: #right .
+    ]
+    
+    repeat: n [
+        jump: 1 inDir: #north .
+    ]
+    
+    # Nested structures
+    while: canMove: 1 do: [
+        if: canPut: 1 ofType: #chips then: [
+            for: y 1 3 [
+                put: y ofType: #chips .
+                if: facing: #north then: [
+                    move: 1 .
+                ]
+            ]
+        ]
+    ]
+]
+
+proc simpleProc [
+    nop .
+]
+
+proc complexProc: a b: c [
+    |local|
+    local := a .
+    while: canMove: local do: [
+        move: b .
+        put: c ofType: #chips .
+    ]
+] 

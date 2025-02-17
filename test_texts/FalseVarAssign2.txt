@@ -1,0 +1,1 @@
+x := #invalid .  # Valor inválido (no es número ni variable) 

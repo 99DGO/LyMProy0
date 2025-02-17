@@ -1,0 +1,5 @@
+proc testWhile [
+    while: invalidCondition do: [  # Condición inválida
+        move: 1 .
+    ]
+] 

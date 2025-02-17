@@ -1,0 +1,5 @@
+proc testFor [
+    for: 123 1 5 [  # Variable inválida (número en lugar de nombre)
+        move: 1 .
+    ]
+] 

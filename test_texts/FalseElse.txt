@@ -1,0 +1,3 @@
+proc test [
+    if: facing: #north then: [nop .] else nop .  # Falta corchetes después del else
+] 

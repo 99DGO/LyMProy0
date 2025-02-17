@@ -1,0 +1,5 @@
+proc testIf [
+    if: canMove: "no-number" then: [  # Número inválido
+        move: 1 .
+    ]
+] 

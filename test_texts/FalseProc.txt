@@ -1,0 +1,3 @@
+proc 123 [  # Nombre inválido (número)
+    nop .
+] 
