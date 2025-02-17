@@ -1,0 +1,3 @@
+proc test [
+    if: facing: #north nop .  # Falta then y corchetes
+] 

@@ -1,0 +1,5 @@
+proc testRepeat [
+    repeat: "no-number" [  # Número inválido
+        move: 1 .
+    ]
+] 

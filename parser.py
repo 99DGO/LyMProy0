@@ -266,12 +266,14 @@ def checkTK_THEN(lstTokens):
     return lstTokens  # no es un then, continua
 
 def checkNestedBrackets(lstTokens, sublistTokens):
-    
     if lstTokens and lstTokens[0][0] == tk.TK_CODEBLOCK_DIVLEFT:
         lstTokens.pop(0)
         nested_count = 1
         
         while lstTokens and nested_count > 0:
+            if not lstTokens:  # Si se acaban los tokens y nested_count > 0
+                raise Exception("Falta corchete de cierre ']'")
+                
             token = lstTokens[0]
             
             if token[0] == tk.TK_CODEBLOCK_DIVLEFT:
@@ -283,7 +285,10 @@ def checkNestedBrackets(lstTokens, sublistTokens):
             else:
                 # si no es un corchete, agregar a la sublista de parserMain
                 sublistTokens.append(lstTokens.pop(0))
-                
+        
+        if nested_count > 0:  # Si terminamos los tokens pero aún faltan corchetes por cerrar
+            raise Exception("Falta corchete de cierre ']'")
+            
         return sublistTokens if nested_count == 0 else []
     return lstTokens
 
@@ -333,9 +338,7 @@ def checkTK_PROC(lstTokens):
 
 
 def checkTK_VAR_ASSIGN(lstTokens):
-    """
-    Verifica la estructura de una asignación de variable asegurando que tenga un valor válido.
-    """
+    
     if lstTokens and lstTokens[0][0] == tk.TK_NAME:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] == tk.TK_VAR_ASSIGN:
@@ -346,11 +349,7 @@ def checkTK_VAR_ASSIGN(lstTokens):
     return lstTokens  # no es una asign de variable, continua 
 
 def checkTK_PROCCALL(lstTokens):
-    """
-    chequea que los procedures definidos sean llamados correctamente.
-    Una llamada debe terminar con . (goNorth.). Si tiene parámetros, 
-    se revisa que se pasen en la cantidad y formato correctos.
-    """
+    
     if not lstTokens:
         return lstTokens
         

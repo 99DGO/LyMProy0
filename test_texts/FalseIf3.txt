@@ -1,0 +1,5 @@
+proc testIf [
+    if: canPut: 1 ofType: #invalid then: [  # Tipo inválido
+        move: 1 .
+    ]
+] 

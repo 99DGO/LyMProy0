@@ -1,0 +1,3 @@
+proc test: 123 param2: abc [  # Parámetro inválido (número)
+    nop .
+] 

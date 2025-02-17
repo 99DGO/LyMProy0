@@ -1,0 +1,8 @@
+proc test [
+    while: canMove: 1 do: [
+        move: 1 .
+        if: facing: #north then: [
+            nop .
+        # Falta cerrar este corchete
+    ]
+] 

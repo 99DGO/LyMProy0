@@ -1,0 +1,5 @@
+proc testFor [
+    for: x "no-number" 5 [  # Rango inválido
+        move: 1 .
+    ]
+] 
