@@ -1,5 +1,0 @@
-
-
-proc putChips [
-goto: are with: #chips ]
-

@@ -61,7 +61,7 @@ def parserMain(lstTokens)-> bool:
                 raise Exception("menu parser")          
     except Exception as e:
         correcta=False
-        traceback.print_exc()
+        #traceback.print_exc()
     
     return correcta
     

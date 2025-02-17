@@ -1,0 +1,50 @@
+|b|
+
+proc putChips: n [
+|a |
+goto: n with: 2 .
+goto: 4 with: n .
+
+move: a .
+move: 4 .
+
+turn: #left .
+turn: #right .
+turn: #around .
+
+face: #north .
+face: #south .
+face: #east .
+face: #west .
+
+put: n ofType: #balloons .
+put: 1 ofType: #chips .
+
+pick: 1 ofType: #chips .
+pick: a ofType: #balloons .
+
+move: b toThe: #front .
+move: 2 toThe: #back .
+move: n toThe: #left .
+move: 4 toThe: #right .
+
+move: n inDir: #north .
+move: 2 inDir: #south .
+move: a inDir: #east .
+move: 4 inDir: #west .
+
+jump: n toThe: #front .
+jump: 2 toThe: #back .
+jump: b toThe: #left .
+jump: 4 toThe: #right .
+
+jump: n inDir: #north .
+jump: 2 inDir: #south .
+jump: b inDir: #east .
+jump: 4 inDir: #west .
+
+ ]
+
+proc nothing [
+    nop .
+]

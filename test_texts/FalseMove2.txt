@@ -1,0 +1,9 @@
+
+proc nothing [
+    | a |
+    nop .
+]
+
+[
+    move: a .
+]
