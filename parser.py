@@ -53,11 +53,11 @@ def parserMain(lstTokens)-> bool:
                 
                 while len(sublistTokens)!=0: 
                     token=sublistTokens[0];
-                    boolInst=opcionesInstrucciones(sublistTokens, proc_name)
+                    boolInst=opcionesInstrucciones(sublistTokens)
 
                     if not len(sublistTokens)==0:
                         token=sublistTokens[0];
-                        boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
+                        boolIf=opcionesIfLoopFor(sublistTokens)
                         if token[0]==tk.TK_NUMERO:
                             checkTK_NUMERO(sublistTokens)
                         elif token[0]==tk.TK_NAMEPUNTOS:
@@ -305,7 +305,7 @@ def checkTK_PROC(lstTokens):
                 
                 # si hay mas parámetros, debe venir ':'
                 if lstTokens and lstTokens[0][0] != tk.TK_CODEBLOCK_DIVLEFT:
-                    if lstTokens[0][0] == tk.TK_DOSPUNTOS:
+                    if lstTokens[0][0] == tk.TK_NAMEPUNTOS:
                         lstTokens.pop(0)
                         # luego de ':' debe venir otro nombre
                         if not (lstTokens and lstTokens[0][0] == tk.TK_NAME):
