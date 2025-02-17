@@ -149,7 +149,7 @@ def checkTK_NAMEPUNTOS(lstTokens):
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
 def checkTK_IF(lstTokens, nombreProc=""):
-    
+    sublistTokens = []
     if lstTokens and lstTokens[0][0] == tk.TK_IF:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] in [tk.TK_FACING, tk.TK_CANMOVE, tk.TK_CANJUMP, tk.TK_NOT, tk.TK_CANPUT, tk.TK_CANPICK]:
@@ -177,6 +177,7 @@ def checkTK_IF(lstTokens, nombreProc=""):
     return lstTokens
 
 def checkTK_WHILE(lstTokens, nombreProc=""):
+    sublistTokens = []
     if lstTokens and lstTokens[0][0] == tk.TK_WHILE:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] in [tk.TK_FACING, tk.TK_CANMOVE, tk.TK_CANJUMP, tk.TK_NOT, tk.TK_CANPUT, tk.TK_CANPICK]:
@@ -204,6 +205,7 @@ def checkTK_WHILE(lstTokens, nombreProc=""):
     return lstTokens
 
 def checkTK_REPEAT(lstTokens, nombreProc=""):
+    sublistTokens = []
     if lstTokens and lstTokens[0][0] == tk.TK_REPEAT:
         lstTokens.pop(0)
         if lstTokens[0][0] == tk.TK_NUMERO:
@@ -216,6 +218,7 @@ def checkTK_REPEAT(lstTokens, nombreProc=""):
     return lstTokens
 
 def checkTK_FOR(lstTokens, nombreProc=""):
+    sublistTokens = []
     if lstTokens and lstTokens[0][0] == tk.TK_FOR:
         lstTokens.pop(0)
         if lstTokens and lstTokens[0][0] == tk.TK_NAME:  # variable del for
@@ -276,7 +279,7 @@ def checkNestedBrackets(lstTokens, sublistTokens):
 
 
 def checkTK_PROC(lstTokens):
-    
+    sublistTokens = []
     if lstTokens and lstTokens[0][0] == tk.TK_PROC:
         lstTokens.pop(0)
         
