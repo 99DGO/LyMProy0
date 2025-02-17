@@ -35,14 +35,8 @@ def parserMain(lstTokens)-> bool:
                             token=sublistTokens[0];
                             boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
                             
-                            if token[0]==tk.TK_NUMERO:
-                                checkTK_NUMERO(sublistTokens)
-                            elif token[0]==tk.TK_NAMEPUNTOS:
-                                checkTK_NAMEPUNTOS(sublistTokens)
-                            elif token[0]==tk.TK_NAME:
+                            if token[0]==tk.TK_NAME:
                                 checkTK_NAME(sublistTokens)
-                            elif token[0]==tk.TK_VAR_ASSIGN:
-                                checkTK_VAR_ASSIGN(sublistTokens)
                             elif not boolIf and not boolInst:
                                 raise Exception("menu parser")
 
@@ -58,14 +52,8 @@ def parserMain(lstTokens)-> bool:
                     if not len(sublistTokens)==0:
                         token=sublistTokens[0];
                         boolIf=opcionesIfLoopFor(sublistTokens)
-                        if token[0]==tk.TK_NUMERO:
-                            checkTK_NUMERO(sublistTokens)
-                        elif token[0]==tk.TK_NAMEPUNTOS:
-                            checkTK_NAMEPUNTOS(sublistTokens)
-                        elif token[0]==tk.TK_NAME:
+                        if token[0]==tk.TK_NAME:
                             checkTK_NAME(sublistTokens)
-                        elif token[0]==tk.TK_VAR_ASSIGN:
-                            checkTK_VAR_ASSIGN(sublistTokens)
                         elif not boolIf and not boolInst:
                             raise Exception("menu parser")
             else:
