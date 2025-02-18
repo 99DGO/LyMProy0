@@ -151,24 +151,112 @@ def checkTK_IF(lstTokens, nombreProc=""):
             token_type = lstTokens[0][0]
             lstTokens.pop(0)
             
-            # para CANPUT, CANPICK, CANMOVE necesitamos chequear n
-            if token_type in [tk.TK_CANPUT, tk.TK_CANPICK, tk.TK_CANMOVE]:
-                if lstTokens[0][0] == tk.TK_NUMERO:
-                    lstTokens.pop(0)
-                elif check_ValidVariable(lstTokens, nombreProc):
-                    lstTokens.pop(0)
-                else:
-                    raise Exception("Se esperaba número o variable válida")
+            if token_type == tk.TK_FACING:
+                if not lstTokens:
+                    raise Exception("Se esperaba dirección NESW")
+                if not check_Direction_NESW(lstTokens):
+                    raise Exception("Se esperaba dirección NESW")
+                lstTokens.pop(0)
                 
-                # para CANPUT y CANPICK chequear tipo
-                if token_type in [tk.TK_CANPUT, tk.TK_CANPICK]:
+                # Verificar punto después de la condición
+                if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+                    raise Exception("Falta punto después de la condición")
+                lstTokens.pop(0)
+                
+            elif token_type == tk.TK_NOT:
+                if not lstTokens:
+                    raise Exception("Se esperaba una condición después de not")
+                    
+                # Verificar que sigue una condición válida
+                if lstTokens[0][0] not in [tk.TK_FACING, tk.TK_CANMOVE, tk.TK_CANJUMP, tk.TK_CANPUT, tk.TK_CANPICK]:
+                    raise Exception("Se esperaba una condición válida después de not")
+                    
+                # Procesar la condición que sigue al not
+                token_type = lstTokens[0][0]
+                lstTokens.pop(0)
+                
+                if token_type == tk.TK_FACING:
+                    if not lstTokens:
+                        raise Exception("Se esperaba dirección NESW")
+                    if not check_Direction_NESW(lstTokens):
+                        raise Exception("Se esperaba dirección NESW")
+                    lstTokens.pop(0)
+                    
+                    # Verificar punto después de la condición
+                    if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+                        raise Exception("Falta punto después de la condición")
+                    lstTokens.pop(0)
+                    
+                elif token_type in [tk.TK_CANPUT, tk.TK_CANPICK]:
+                    # Verificar n
+                    if not lstTokens:
+                        raise Exception("Se esperaba número o variable válida")
+                    if lstTokens[0][0] == tk.TK_NUMERO:
+                        lstTokens.pop(0)
+                    elif check_ValidVariable(lstTokens, nombreProc):
+                        lstTokens.pop(0)
+                    else:
+                        raise Exception("Se esperaba número o variable válida")
+                    
+                    # Verificar ofType
+                    if not lstTokens:
+                        raise Exception("Se esperaba ofType")
+                    if lstTokens[0][0] != tk.TK_OFTYPE:
+                        raise Exception("Se esperaba ofType")
+                    lstTokens.pop(0)
+                    
+                    # Verificar tipo (balloons o chips)
+                    if not lstTokens:
+                        raise Exception("Se esperaba balloons o chips")
                     if lstTokens[0][0] not in [tk.TK_BALLOONS, tk.TK_CHIPS]:
                         raise Exception("Se esperaba balloons o chips")
                     lstTokens.pop(0)
+                    
+                    # Verificar punto después de la condición
+                    if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+                        raise Exception("Falta punto después de la condición")
+                    lstTokens.pop(0)
+                    
+                elif token_type in [tk.TK_CANMOVE, tk.TK_CANJUMP]:
+                    # Verificar n
+                    if not lstTokens:
+                        raise Exception("Se esperaba número o variable válida")
+                    if lstTokens[0][0] == tk.TK_NUMERO:
+                        lstTokens.pop(0)
+                    elif check_ValidVariable(lstTokens, nombreProc):
+                        lstTokens.pop(0)
+                    else:
+                        raise Exception("Se esperaba número o variable válida")
+                        
+                    # Verificar inDir o toThe
+                    if not lstTokens:
+                        raise Exception("Se esperaba inDir o toThe")
+                    if lstTokens[0][0] not in [tk.TK_INDIR, tk.TK_TOTHE]:
+                        raise Exception("Se esperaba inDir o toThe")
+                    direction_type = lstTokens[0][0]
+                    lstTokens.pop(0)
+                    
+                    # Verificar dirección según el tipo
+                    if not lstTokens:
+                        raise Exception("Se esperaba dirección")
+                    if direction_type == tk.TK_INDIR:
+                        if not check_Direction_NESW(lstTokens):
+                            raise Exception("Se esperaba dirección NESW")
+                        lstTokens.pop(0)
+                    else:  # tk.TK_TOTHE
+                        if not check_Direction_FBLR(lstTokens):
+                            raise Exception("Se esperaba dirección FBLR")
+                        lstTokens.pop(0)
             
-            if lstTokens and lstTokens[0][0] == tk.TK_THEN:
+            if not lstTokens:
+                raise Exception("Falta then")
+            if lstTokens[0][0] == tk.TK_THEN:
                 lstTokens.pop(0)
                 return checkNestedBrackets(lstTokens, sublistTokens)
+            else:
+                raise Exception("Falta then")
+        else:
+            raise Exception("Se esperaba una condición válida")
     return lstTokens
 
 def checkTK_WHILE(lstTokens, nombreProc=""):
@@ -179,36 +267,143 @@ def checkTK_WHILE(lstTokens, nombreProc=""):
             token_type = lstTokens[0][0]
             lstTokens.pop(0)
             
-            # para CANPUT, CANPICK, CANMOVE necesitamos  chequear n
-            if token_type in [tk.TK_CANPUT, tk.TK_CANPICK, tk.TK_CANMOVE]:
-                if lstTokens[0][0] == tk.TK_NUMERO:
-                    lstTokens.pop(0)
-                elif check_ValidVariable(lstTokens, nombreProc):
-                    lstTokens.pop(0)
-                else:
-                    raise Exception("Se esperaba número o variable válida")
+            if token_type == tk.TK_FACING:
+                if not lstTokens:
+                    raise Exception("Se esperaba dirección NESW")
+                if not check_Direction_NESW(lstTokens):
+                    raise Exception("Se esperaba dirección NESW")
+                lstTokens.pop(0)
                 
-                #para CANPUT y CANPICK chequear tipo
-                if token_type in [tk.TK_CANPUT, tk.TK_CANPICK]:
+                # Verificar punto después de la condición
+                if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+                    raise Exception("Falta punto después de la condición")
+                lstTokens.pop(0)
+                
+            elif token_type == tk.TK_NOT:
+                if not lstTokens:
+                    raise Exception("Se esperaba una condición después de not")
+                    
+                # Verificar que sigue una condición válida
+                if lstTokens[0][0] not in [tk.TK_FACING, tk.TK_CANMOVE, tk.TK_CANJUMP, tk.TK_CANPUT, tk.TK_CANPICK]:
+                    raise Exception("Se esperaba una condición válida después de not")
+                    
+                # Procesar la condición que sigue al not
+                token_type = lstTokens[0][0]
+                lstTokens.pop(0)
+                
+                if token_type == tk.TK_FACING:
+                    if not lstTokens:
+                        raise Exception("Se esperaba dirección NESW")
+                    if not check_Direction_NESW(lstTokens):
+                        raise Exception("Se esperaba dirección NESW")
+                    lstTokens.pop(0)
+                    
+                    # Verificar punto después de la condición
+                    if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+                        raise Exception("Falta punto después de la condición")
+                    lstTokens.pop(0)
+                    
+                elif token_type in [tk.TK_CANPUT, tk.TK_CANPICK]:
+                    # Verificar n
+                    if not lstTokens:
+                        raise Exception("Se esperaba número o variable válida")
+                    if lstTokens[0][0] == tk.TK_NUMERO:
+                        lstTokens.pop(0)
+                    elif check_ValidVariable(lstTokens, nombreProc):
+                        lstTokens.pop(0)
+                    else:
+                        raise Exception("Se esperaba número o variable válida")
+                    
+                    # Verificar ofType
+                    if not lstTokens:
+                        raise Exception("Se esperaba ofType")
+                    if lstTokens[0][0] != tk.TK_OFTYPE:
+                        raise Exception("Se esperaba ofType")
+                    lstTokens.pop(0)
+                    
+                    # Verificar tipo (balloons o chips)
+                    if not lstTokens:
+                        raise Exception("Se esperaba balloons o chips")
                     if lstTokens[0][0] not in [tk.TK_BALLOONS, tk.TK_CHIPS]:
                         raise Exception("Se esperaba balloons o chips")
                     lstTokens.pop(0)
+                    
+                    # Verificar punto después de la condición
+                    if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+                        raise Exception("Falta punto después de la condición")
+                    lstTokens.pop(0)
+                    
+                elif token_type in [tk.TK_CANMOVE, tk.TK_CANJUMP]:
+                    # Verificar n
+                    if not lstTokens:
+                        raise Exception("Se esperaba número o variable válida")
+                    if lstTokens[0][0] == tk.TK_NUMERO:
+                        lstTokens.pop(0)
+                    elif check_ValidVariable(lstTokens, nombreProc):
+                        lstTokens.pop(0)
+                    else:
+                        raise Exception("Se esperaba número o variable válida")
+                        
+                    # Verificar inDir o toThe
+                    if not lstTokens:
+                        raise Exception("Se esperaba inDir o toThe")
+                    if lstTokens[0][0] not in [tk.TK_INDIR, tk.TK_TOTHE]:
+                        raise Exception("Se esperaba inDir o toThe")
+                    direction_type = lstTokens[0][0]
+                    lstTokens.pop(0)
+                    
+                    # Verificar dirección según el tipo
+                    if not lstTokens:
+                        raise Exception("Se esperaba dirección")
+                    if direction_type == tk.TK_INDIR:
+                        if not check_Direction_NESW(lstTokens):
+                            raise Exception("Se esperaba dirección NESW")
+                        lstTokens.pop(0)
+                    else:  # tk.TK_TOTHE
+                        if not check_Direction_FBLR(lstTokens):
+                            raise Exception("Se esperaba dirección FBLR")
+                        lstTokens.pop(0)
+                    
+                    # Verificar punto después de la condición
+                    if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+                        raise Exception("Falta punto después de la condición")
+                    lstTokens.pop(0)
             
-            if lstTokens and lstTokens[0][0] == tk.TK_DO:
+            if not lstTokens:
+                raise Exception("Falta do")
+            if lstTokens[0][0] == tk.TK_DO:
                 lstTokens.pop(0)
                 return checkNestedBrackets(lstTokens, sublistTokens)
+            else:
+                raise Exception("Falta do")
+        else:
+            raise Exception("Se esperaba una condición válida")
     return lstTokens
 
 def checkTK_REPEAT(lstTokens, nombreProc=""):
     sublistTokens = []
     if lstTokens and lstTokens[0][0] == tk.TK_REPEAT:
         lstTokens.pop(0)
+        
+        # Verificar si hay dos puntos después del repeat (opcional)
+        if lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:
+            lstTokens.pop(0)
+            
+        if not lstTokens:
+            raise Exception("Se esperaba número o variable válida")
+            
         if lstTokens[0][0] == tk.TK_NUMERO:
             lstTokens.pop(0)
         elif check_ValidVariable(lstTokens, nombreProc):
             lstTokens.pop(0)
         else:
             raise Exception("Se esperaba número o variable válida")
+            
+        # Verificar punto después del número/variable
+        if not lstTokens or lstTokens[0][0] != tk.TK_PUNTO:
+            raise Exception("Falta punto después del número/variable")
+        lstTokens.pop(0)
+            
         return checkNestedBrackets(lstTokens, sublistTokens)
     return lstTokens
 
@@ -216,17 +411,38 @@ def checkTK_FOR(lstTokens, nombreProc=""):
     sublistTokens = []
     if lstTokens and lstTokens[0][0] == tk.TK_FOR:
         lstTokens.pop(0)
-        if lstTokens and lstTokens[0][0] == tk.TK_NAME:  # variable del for
+        
+        # Verificar si hay dos puntos después del for (opcional)
+        if lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:
             lstTokens.pop(0)
-            #chequeo inicio y fin del rango
-            for _ in range(2):  
-                if lstTokens[0][0] == tk.TK_NUMERO:
-                    lstTokens.pop(0)
-                elif check_ValidVariable(lstTokens, nombreProc):
-                    lstTokens.pop(0)
-                else:
-                    raise Exception("Se esperaba número o variable válida")
-            return checkNestedBrackets(lstTokens, sublistTokens)
+            
+        if not lstTokens:
+            raise Exception("Se esperaba número o variable después del for")
+            
+        # Verificar n (número o variable)
+        if lstTokens[0][0] == tk.TK_NUMERO:
+            lstTokens.pop(0)
+        elif check_ValidVariable(lstTokens, nombreProc):
+            lstTokens.pop(0)
+        else:
+            raise Exception("Se esperaba número o variable válida")
+            
+        if not lstTokens:
+            raise Exception("Se esperaba repeat después del número/variable")
+            
+        # Verificar repeat:
+        if lstTokens[0][0] != tk.TK_REPEAT:
+            raise Exception("Se esperaba repeat")
+        lstTokens.pop(0)
+        
+        # Verificar si hay dos puntos después del repeat (opcional)
+        if lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:
+            lstTokens.pop(0)
+            
+        if not lstTokens:
+            raise Exception("Falta el cuerpo del for")
+            
+        return checkNestedBrackets(lstTokens, sublistTokens)
     return lstTokens
 
 def checkTK_ELSE(lstTokens):
@@ -283,16 +499,23 @@ def checkTK_PROC(lstTokens):
     if lstTokens and lstTokens[0][0] == tk.TK_PROC:
         lstTokens.pop(0)
         
+        if not lstTokens:
+            raise Exception("Se esperaba un nombre de procedimiento")
+            
         # chequea si es un nombre simple o con parámetros
-        if lstTokens and lstTokens[0][0] == tk.TK_NAME:  # caso sin parámetros
+        if lstTokens[0][0] == tk.TK_NAME:  # caso sin parámetros
             proc_name = lstTokens[0][1]
+            if proc_name in procedures:
+                raise Exception(f"Procedimiento {proc_name} ya definido")
             procedures.append(proc_name)
             variables_locales[proc_name] = []  # proc sin parámetros
             lstTokens.pop(0)
             return [proc_name, checkNestedBrackets(lstTokens, sublistTokens)]
             
-        elif lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:  # caso con parámetros
+        elif lstTokens[0][0] == tk.TK_NAMEPUNTOS:  # caso con parámetros
             proc_name = lstTokens[0][1].rstrip(':')  # quito los : del nombre
+            if proc_name in procedures:
+                raise Exception(f"Procedimiento {proc_name} ya definido")
             procedures.append(proc_name)
             variables_locales[proc_name] = []  #lista de params
             lstTokens.pop(0)
@@ -396,11 +619,10 @@ def checkTK_VAR_DIV(lstTokens, nombreProc=""):
             boolVarDivReached=True
         else:
             raise Exception()
- 
- 
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 # funcs de instrucciones
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
  
 def checkTK_GOTO(lstTokens, nombreProc=""):
     #Quito el goto 
