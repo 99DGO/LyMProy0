@@ -1,9 +1,8 @@
 |x y z|
 
-proc controlStructures: n m [
+proc controlStructures: n and: m [
     |local1 local2|
     
-    # IF tests
     if: facing: #north then: [
         move: 1 .
     ]
@@ -28,7 +27,6 @@ proc controlStructures: n m [
         turn: #around .
     ]
     
-    # WHILE tests
     while: canMove: n do: [
         move: n .
         if: canPut: 1 ofType: #chips then: [
@@ -40,7 +38,6 @@ proc controlStructures: n m [
         turn: #right .
     ]
     
-    # FOR tests
     for: local2 1 10 [
         put: local2 ofType: #balloons .
     ]
@@ -49,7 +46,6 @@ proc controlStructures: n m [
         move: x .
     ]
     
-    # REPEAT tests
     repeat: 5 [
         turn: #right .
     ]
@@ -58,7 +54,6 @@ proc controlStructures: n m [
         jump: 1 inDir: #north .
     ]
     
-    # Nested structures
     while: canMove: 1 do: [
         if: canPut: 1 ofType: #chips then: [
             for: y 1 3 [
