@@ -3,71 +3,53 @@
 proc controlStructures: n m [
     |local1 local2|
     
-    # IF tests
-    if: facing: #north then: [
-        move: 1 .
+    
+    if facing: #north then: [
+        nop .
     ]
     
-    if: canMove: n then: [
-        move: n .
+    if canMove: n then: [
+        nop .
     ]
     
-    if: canPut: m ofType: #chips then: [
-        put: m ofType: #chips .
+    if canPut: m ofType: #chips then: [
+        nop .
     ]
     
-    if: canPick: local1 ofType: #balloons then: [
-        pick: local1 ofType: #balloons .
+    if canPick: local1 ofType: #balloons then: [
+        nop .
     ]
     
-    if: canJump: 2 then: [
-        jump: 2 .
+    if canJump: 2 then: [
+        nop .
     ]
     
-    if: not: facing: #south then: [
-        turn: #around .
+    if not: facing: #south then: [
+        nop .
     ]
     
-    # WHILE tests
-    while: canMove: n do: [
-        move: n .
-        if: canPut: 1 ofType: #chips then: [
-            put: 1 ofType: #chips .
-        ]
+    while canMove: n do: [
+        nop .
     ]
     
-    while: facing: #east do: [
-        turn: #right .
+    while facing: #east do: [
+        nop .
     ]
     
-    # FOR tests
-    for: local2 1 10 [
-        put: local2 ofType: #balloons .
+    for: x 1 10 [
+        nop .
     ]
     
-    for: x n m [
-        move: x .
+    for: y n m [
+        nop .
     ]
     
-    # REPEAT tests
     repeat: 5 [
-        turn: #right .
+        nop .
     ]
     
     repeat: n [
-        jump: 1 inDir: #north .
-    ]
-    
-    # Nested structures
-    while: canMove: 1 do: [
-        if: canPut: 1 ofType: #chips then: [
-            for: y 1 3 [
-                put: y ofType: #chips .
-                if: facing: #north then: [
-                    move: 1 .
-                ]
-            ]
-        ]
+        nop .
     ]
 ]
 
@@ -78,8 +60,17 @@ proc simpleProc [
 proc complexProc: a b: c [
     |local|
     local := a .
-    while: canMove: local do: [
-        move: b .
-        put: c ofType: #chips .
+    while canMove: local do: [
+        nop .
     ]
+]
+
+[ [
+    nop .
+    [while canMove: 1 do: [
+        nop .
+    ]
+    nop .
+    nop .]
+]
 ] 
