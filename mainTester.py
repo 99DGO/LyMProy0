@@ -5,8 +5,8 @@ import parser as ps
 #Este fue solamente un tester que hicimos, ignorenlo porfa
 
 carpeta="test_texts/"
-lstArchivos = ["TrueInstructions2.txt"]
-#, "FalseGoTo.txt","FalseGoTo2.txt", "FalseGoTo3.txt", "FalseFace.txt", "FalseMove.txt", "FalseMove2.txt", "FalsePut.txt", "FalsePut2.txt", "FalsePick.txt", "FalseMoveToThe.txt", "FalseMoveInDir.txt",
+lstArchivos = [ "code-examples.txt", "TrueInstructions.txt" , "True4.txt","True3.txt", "TrueInstructions2.txt"]
+#, "code-examples.txt" , "True4.txt","True3.txt", "TrueInstructions2.txt", "FalseGoTo.txt","FalseGoTo2.txt", "FalseGoTo3.txt", "FalseFace.txt", "FalseMove.txt", "FalseMove2.txt", "FalsePut.txt", "FalsePut2.txt", "FalsePick.txt", "FalseMoveToThe.txt", "FalseMoveInDir.txt",
 #               "FalseMoveInDir2.txt", "FalseNop.txt", "FalseVarDiv.txt", "FalseVarDiv2.txt", "FalseJumpInDir.txt", "FalseJumpToThe.txt"] 
 
 for archName in lstArchivos:

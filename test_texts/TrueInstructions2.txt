@@ -3,78 +3,52 @@
 proc controlStructures: n and: m [
     |local1 local2|
     
-    if: facing: #north then: [
+    if: facing: #north . then: [
         move: 1 .
-    ]
+    ] else: [ nop . ]
     
-    if: canMove: n then: [
+    if: canMove: n toThe: #front . then: [
         move: n .
-    ]
+    ] else: [ nop . ]
     
-    if: canPut: m ofType: #chips then: [
+    if: canPut: m ofType: #chips . then: [
         put: m ofType: #chips .
-    ]
+    ] else: [ nop . ]
     
-    if: canPick: local1 ofType: #balloons then: [
+    if: canPick: local1 ofType: #balloons . then: [
         pick: local1 ofType: #balloons .
-    ]
+    ] else: [ nop . ]
     
-    if: canJump: 2 then: [
+    if: canJump: 2 inDir: #south . then: [
         jump: 2 .
-    ]
+    ] else: [ nop . ]
     
-    if: not: facing: #south then: [
+    if: not: facing: #south . then: [
         turn: #around .
-    ]
+    ] else: [ nop . ]
     
-    while: canMove: n do: [
+    while: canMove: n inDir: #south . do: [
         move: n .
-        if: canPut: 1 ofType: #chips then: [
+        if: canPut: 1 ofType: #chips . then: [
             put: 1 ofType: #chips .
-        ]
+        ] else: [ nop . ]
     ]
     
-    while: facing: #east do: [
+    while: facing: #east . do: [
         turn: #right .
     ]
     
-    for: local2 1 10 [
+    for: local2 repeat: [
         put: local2 ofType: #balloons .
     ]
     
-    for: x n m [
+    for: x repeat:  [
         move: x .
     ]
     
-    repeat: 5 [
-        turn: #right .
-    ]
-    
-    repeat: n [
-        jump: 1 inDir: #north .
-    ]
-    
-    while: canMove: 1 do: [
-        if: canPut: 1 ofType: #chips then: [
-            for: y 1 3 [
-                put: y ofType: #chips .
-                if: facing: #north then: [
-                    move: 1 .
-                ]
-            ]
-        ]
-    ]
 ]
 
 proc simpleProc [
     nop .
 ]
 
-proc complexProc: a b: c [
-    |local|
-    local := a .
-    while: canMove: local do: [
-        move: b .
-        put: c ofType: #chips .
-    ]
-] 

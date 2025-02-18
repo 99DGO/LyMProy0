@@ -55,7 +55,7 @@ TK_REPEAT="repeat:"
 #Tokens condiciones
 TK_FACING="facing:"
 
-TK_CANPUT="canput:"
+TK_CANPUT="canPut:"
 TK_OFTYPE="ofType:"
 TK_CANPICK="canPick:"
 

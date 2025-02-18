@@ -39,12 +39,33 @@ def tokenize(inputString) -> list:
                 else:
                     if subString[i]==subString[-1]:
                         lstTokens.append((tk.TK_UNKNOWN_END, subString[i]))
+                    elif quedanLetras(subString, i):
+                        lstTokens.append((tk.TK_UNKNOWN_END, subString[i]))
                     else:
                         lstTokens.append((tk.TK_UNKNOWN, subString[i]))
                     
                 i+=1                     
      
     return cleanUnknowns(lstTokens)
+
+def quedanLetras(subString, i2):
+    i=i2+1
+    if subString[i]=="]" or subString[i]=="|" or subString[i]=="." or subString[i]==":=":
+        quedan=True
+    else:
+        quedan=False
+    return quedan
+
+    quedan=False
+    i=i+1;
+    while i <len(subString):
+        if subString[i]=="]" or subString[i]=="|" or subString[i]=="." or subString[i]==":=":
+            quedan= True
+        else:
+            return False
+        i+=1;
+    
+    return quedan
 
 def cleanUnknowns(unkLstTokens):
     

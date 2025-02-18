@@ -1,6 +1,7 @@
 import lexer as lx
 import parser as ps
 
+#Porfa lean el readme antes de ejecutar el programa
 ####Escriban aca el nombre del archivo:
 archivo = 'code-examples.txt'
 codigo = ""

@@ -1,0 +1,9 @@
+
+proc comp: a b: c [
+    |local2|
+    local2 := a .
+    while: canMove: local2 inDir: #south . do: [
+        move: a .
+        put: c ofType: #chips .
+    ]
+] 

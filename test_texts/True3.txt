@@ -1,0 +1,15 @@
+|x y z|
+
+proc hola: [
+    while: canMove: 1 inDir: #south . do: [
+        if: canPut: 1 ofType: #chips . then: [
+            for: y repeat: [
+                put: y ofType: #chips .
+                if: facing: #north . then: [
+                    move: 1 .
+                ] else: [ nop . ]
+            ]
+        ] else: [ nop . ]
+    ]
+]
+
