@@ -36,7 +36,7 @@ def parserMain(lstTokens)-> bool:
                             boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
                             
                             if token[0]==tk.TK_NAME:
-                                checkTK_NAME(sublistTokens)
+                                checkTK_NAME(sublistTokens, proc_name)
                             elif not boolIf and not boolInst:
                                 raise Exception("menu parser")
 
@@ -120,16 +120,9 @@ def opcionesIfLoopFor(lstTokens, nombreProc=""):
 # funcs para chequear tipos de nombres y números
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
-def checkTK_NAME(lstTokens):
-    
-    token_type, token_value = lstTokens[0]
-    if token_type == tk.TK_UNKNOWN:
-        if token_value.replace('.', '', 1).isdigit():
-            lstTokens[0] = (tk.TK_NUMERO, token_value)
-        elif ':' in token_value:
-            lstTokens[0] = (tk.TK_NAMEPUNTOS, token_value)
-        else:
-            lstTokens[0] = (tk.TK_NAME, token_value)
+def checkTK_NAME(lstTokens, nombreProc=""):
+    if lstTokens and lstTokens[0][0] == tk.TK_NAME:
+        return checkTK_VAR_ASSIGN(lstTokens, nombreProc)
     return lstTokens
 
 def checkTK_NUMERO(lstTokens):
@@ -325,16 +318,31 @@ def checkTK_PROC(lstTokens):
     return lstTokens  # no es un proc, continua
 
 
-def checkTK_VAR_ASSIGN(lstTokens):
-    
+def checkTK_VAR_ASSIGN(lstTokens, nombreProc=""):
     if lstTokens and lstTokens[0][0] == tk.TK_NAME:
+        nombre = lstTokens[0][1]
+        if not (nombre in variables_globales or nombre in variables_locales.get(nombreProc, [])):
+            raise Exception(f"Variable {nombre} no declarada")
         lstTokens.pop(0)
+        
         if lstTokens and lstTokens[0][0] == tk.TK_VAR_ASSIGN:
             lstTokens.pop(0)
             if lstTokens and lstTokens[0][0] in [tk.TK_NUMERO, tk.TK_NAME]:
+                if lstTokens[0][0] == tk.TK_NAME:
+                    var_nombre = lstTokens[0][1]
+                    if not (var_nombre in variables_globales or var_nombre in variables_locales.get(nombreProc, [])):
+                        raise Exception(f"Variable {var_nombre} no declarada")
                 lstTokens.pop(0)
-                return lstTokens  #completada
-    return lstTokens  # no es una asign de variable, continua 
+                if lstTokens and lstTokens[0][0] == tk.TK_PUNTO:
+                    lstTokens.pop(0)
+                    return lstTokens
+                else:
+                    raise Exception("Falta punto después de la asignación")
+            else:
+                raise Exception("Se esperaba número o nombre después de :=")
+        else:
+            raise Exception("Se esperaba := después del nombre")
+    return lstTokens
 
 def checkTK_PROCCALL(lstTokens):
     
