@@ -22,7 +22,7 @@ def parserMain(lstTokens)-> bool:
                 sublistTokens=procName_sublistTokens[1]
 
                 if not len(sublistTokens)==0:
-                    token=sublistTokens[0];
+                    token=sublistTokens[0]
                     
                     if token[0]==tk.TK_VAR_DIV:
                         checkTK_VAR_DIV(sublistTokens, proc_name)
@@ -36,7 +36,7 @@ def parserMain(lstTokens)-> bool:
                             boolIf=opcionesIfLoopFor(sublistTokens, proc_name)
                             
                             if token[0]==tk.TK_NAME:
-                                checkTK_NAME(sublistTokens)
+                                checkTK_NAME(sublistTokens, proc_name)
                             elif not boolIf and not boolInst:
                                 raise Exception("menu parser")
 
@@ -46,14 +46,14 @@ def parserMain(lstTokens)-> bool:
                 sublistTokens=checkNestedBrackets(lstTokens, sublistTokens)
                 
                 while len(sublistTokens)!=0: 
-                    token=sublistTokens[0];
+                    token=sublistTokens[0]
                     boolInst=opcionesInstrucciones(sublistTokens)
 
                     if not len(sublistTokens)==0:
-                        token=sublistTokens[0];
+                        token=sublistTokens[0]
                         boolIf=opcionesIfLoopFor(sublistTokens)
                         if token[0]==tk.TK_NAME:
-                            checkTK_NAME(sublistTokens)
+                            checkTK_NAME(sublistTokens, proc_name)
                         elif not boolIf and not boolInst:
                             raise Exception("menu parser")
             else:
@@ -116,14 +116,13 @@ def opcionesIfLoopFor(lstTokens, nombreProc=""):
     else:
         return True
 
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 # funcs para chequear tipos de nombres y números
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 
-def checkTK_NAME(lstTokens):
-
+def checkTK_NAME(lstTokens, nombreProc=""):
     if lstTokens and lstTokens[0][0] == tk.TK_NAME:
-        return checkTK_VAR_ASSIGN(lstTokens)
+        return checkTK_VAR_ASSIGN(lstTokens, nombreProc)
     return lstTokens
 
 
@@ -236,32 +235,31 @@ def checkTK_THEN(lstTokens):
 
 def checkNestedBrackets(lstTokens, sublistTokens):
     if lstTokens and lstTokens[0][0] == tk.TK_CODEBLOCK_DIVLEFT:
-        lstTokens.pop(0)
+        lstTokens.pop(0)  # quitar '['
         nested_count = 1
         
         while lstTokens and nested_count > 0:
-            if not lstTokens:  # Si se acaban los tokens y nested_count > 0
-                raise Exception("Falta corchete de cierre ']'")
-                
             token = lstTokens[0]
             
             if token[0] == tk.TK_CODEBLOCK_DIVLEFT:
                 nested_count += 1
-                lstTokens.pop(0)
+                sublistTokens.append(lstTokens.pop(0))
             elif token[0] == tk.TK_CODEBLOCK_DIVRIGHT:
                 nested_count -= 1
-                lstTokens.pop(0)
+                if nested_count > 0:
+                    sublistTokens.append(lstTokens.pop(0))
+                else:
+                    lstTokens.pop(0)  # quitar último ']'
             else:
-                # si no es un corchete, agregar a la sublista de parserMain
                 sublistTokens.append(lstTokens.pop(0))
         
-        if nested_count > 0:  # Si terminamos los tokens pero aún faltan corchetes por cerrar
+        if nested_count > 0:
             raise Exception("Falta corchete de cierre ']'")
             
-        return sublistTokens if nested_count == 0 else []
+        return sublistTokens
     return lstTokens
 
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 # funcs para proc calls 
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
@@ -271,50 +269,60 @@ def checkTK_PROC(lstTokens):
     if lstTokens and lstTokens[0][0] == tk.TK_PROC:
         lstTokens.pop(0)
         
-        # chequea si es un nombre simple o con parámetros
-        if lstTokens and lstTokens[0][0] == tk.TK_NAME:  # caso sin parámetros
+        if lstTokens and lstTokens[0][0] == tk.TK_NAME:
             proc_name = lstTokens[0][1]
             procedures.append(proc_name)
-            variables_locales[proc_name] = []  # proc sin parámetros
-            lstTokens.pop(0)
-            return [proc_name, checkNestedBrackets(lstTokens, sublistTokens)]
-            
-        elif lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:  # caso con parámetros
-            proc_name = lstTokens[0][1].rstrip(':')  # quito los : del nombre
-            procedures.append(proc_name)
-            variables_locales[proc_name] = []  #lista de params
+            variables_locales[proc_name] = []
             lstTokens.pop(0)
             
-            # procesar parametros hasta encontrar '['
-            while lstTokens and lstTokens[0][0] == tk.TK_NAME:
-                param_name = lstTokens[0][1]
-                variables_locales[proc_name].append(param_name)  # agrego param a la lista del proc
+            # Verificar si es un proc con parámetros
+            if lstTokens and lstTokens[0][0] == tk.TK_NAMEPUNTOS:
+                proc_name = lstTokens[0][1].rstrip(':')
                 lstTokens.pop(0)
                 
-                # si hay mas parámetros, debe venir ':'
-                if lstTokens and lstTokens[0][0] != tk.TK_CODEBLOCK_DIVLEFT:
-                    if lstTokens[0][0] == tk.TK_NAMEPUNTOS:
-                        lstTokens.pop(0)
-                        # luego de ':' debe venir otro nombre
-                        if not (lstTokens and lstTokens[0][0] == tk.TK_NAME):
-                            raise Exception("se esperaba un nombre después de ':'")
-                    else:
-                        raise Exception("se esperaba ':' o '[' después del parámetro")
+                # Procesar parámetros hasta encontrar '['
+                while lstTokens and lstTokens[0][0] == tk.TK_NAME:
+                    param_name = lstTokens[0][1]
+                    variables_locales[proc_name].append(param_name)
+                    lstTokens.pop(0)
+                    
+                    # Si hay más parámetros, debe venir ':'
+                    if lstTokens and lstTokens[0][0] != tk.TK_CODEBLOCK_DIVLEFT:
+                        if lstTokens[0][0] == tk.TK_DOSPUNTOS:
+                            lstTokens.pop(0)
+                        else:
+                            raise Exception("se esperaba ':' o '[' después del parámetro")
             
             return [proc_name, checkNestedBrackets(lstTokens, sublistTokens)]
             
-    return lstTokens  # no es un proc, continua
+    return lstTokens
 
 
-def checkTK_VAR_ASSIGN(lstTokens):
+def checkTK_VAR_ASSIGN(lstTokens, nombreProc=""):
     if lstTokens and lstTokens[0][0] == tk.TK_NAME:
+        nombre = lstTokens[0][1]
+        if not (nombre in variables_globales or nombre in variables_locales.get(nombreProc, [])):
+            raise Exception(f"Variable {nombre} no declarada")
         lstTokens.pop(0)
+        
         if lstTokens and lstTokens[0][0] == tk.TK_VAR_ASSIGN:
             lstTokens.pop(0)
             if lstTokens and lstTokens[0][0] in [tk.TK_NUMERO, tk.TK_NAME]:
+                if lstTokens[0][0] == tk.TK_NAME:
+                    var_nombre = lstTokens[0][1]
+                    if not (var_nombre in variables_globales or var_nombre in variables_locales.get(nombreProc, [])):
+                        raise Exception(f"Variable {var_nombre} no declarada")
                 lstTokens.pop(0)
-                return lstTokens  #completada
-    return lstTokens  # no es una asign de variable, continua 
+                if lstTokens and lstTokens[0][0] == tk.TK_PUNTO:
+                    lstTokens.pop(0)
+                    return lstTokens
+                else:
+                    raise Exception("Falta punto después de la asignación")
+            else:
+                raise Exception("Se esperaba número o nombre después de :=")
+        else:
+            raise Exception("Se esperaba := después del nombre")
+    return lstTokens
 
 def checkTK_PROCCALL(lstTokens):
     
@@ -345,9 +353,9 @@ def checkTK_PROCCALL(lstTokens):
 
 
 
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 # funcs de variable declarations
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
  
 def checkTK_VAR_DIV(lstTokens, nombreProc=""):
     lstTokens.pop(0) 
@@ -370,7 +378,7 @@ def checkTK_VAR_DIV(lstTokens, nombreProc=""):
             raise Exception()
  
  
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
 # funcs de instrucciones
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
  
@@ -567,7 +575,7 @@ def checkTK_NOP(lstTokens, nombreProc=""):
     else:
         raise Exception("token nop")  
     
-# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◢◤◢◤◢◤
+# ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 # funcs de auxiliares
 # ◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤◢◤
 
