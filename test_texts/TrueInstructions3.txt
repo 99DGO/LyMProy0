@@ -1,0 +1,41 @@
+|x y z|
+
+proc simpleProc [
+    nop .
+]
+
+proc complexProc: n [
+    |local|
+    
+    if: facing: #north . then: [
+        move: 1 .
+    ]
+    
+    while: canMove: n . do: [
+        move: n .
+    ]
+    
+    repeat: 5 . [
+        turn: #right .
+    ]
+    
+    for: x 1 10 [
+        put: 1 ofType: #chips .
+    ]
+]
+
+proc withMultipleParams: a and: b [
+    |local1 local2|
+    
+    if: not: facing: #south . then: [
+        turn: #around .
+    ]
+    
+    if: canPut: a ofType: #chips . then: [
+        put: a ofType: #chips .
+    ]
+    
+    while: canPick: b ofType: #balloons . do: [
+        pick: b ofType: #balloons .
+    ]
+] 
